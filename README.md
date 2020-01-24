@@ -8,11 +8,11 @@ The Instagram that the people deserve. A picture sharing platform with honest re
 * Include features that provide users with authentic feedback on their posts
 
 ### Team members
-Gang Hyun Kim         40097242 - Gahyki
-Cristian Milatinov    40098297 - redknight990
-Teng Zhao             40089560 - BladeGD
-Bowen Song            40092922 - bowsong
-Joseph D'Onofrio      21955039 - abroyouknow
+Gang Hyun Kim         40097242 - Gahyki  
+Cristian Milatinov    40098297 - redknight990  
+Teng Zhao             40089560 - BladeGD  
+Bowen Song            40092922 - bowsong  
+Joseph D'Onofrio      21955039 - abroyouknow  
 
 ### Core Features
 * Account system
@@ -26,11 +26,11 @@ Joseph D'Onofrio      21955039 - abroyouknow
 * Tag other users
 
 ### Technologies Used
-VueJS - Font-end interface development.
-NodeJS - Back-end API development.
-MySQL - Database software.
+VueJS - Font-end interface development.  
+NodeJS - Back-end API development.  
+MySQL - Database software.  
 
 ### Languages Used
-JavaScript - Back-end API logic, Front-end interface logic.
-HTML - Front-end interface layout.
-SCSS - Front-end interface styling.
+JavaScript - Back-end API logic, Front-end interface logic.  
+HTML - Front-end interface layout.  
+SCSS - Front-end interface styling.  
