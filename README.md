@@ -8,11 +8,11 @@ The Instagram that the people deserve. A picture sharing platform with honest re
 * Include features that provide users with authentic feedback on their posts
 
 ### Team members
-Gang Hyun Kim         40097242 - Gahyki  
-Cristian Milatinov    40098297 - redknight990  
-Teng Zhao             40089560 - BladeGD  
-Bowen Song            40092922 - bowsong  
-Joseph D'Onofrio      21955039 - abroyouknow  
+40097242 - Gang Hyun Kim - Gahyki  
+40098297 - Cristian Milatinov - redknight990  
+40089560 - Teng Zhao - BladeGD  
+40092922 - Bowen Song - bowsong  
+21955039 - Joseph D'Onofrio - abroyouknow  
 
 ### Core Features
 * Account system
