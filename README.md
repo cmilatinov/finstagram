@@ -1,4 +1,4 @@
-# finstagram
+# Finstagram
 
 ### Project Description
 The Instagram that the people deserve. A picture sharing platform with honest reactions for down to earth users who won't shy away from a little constructive criticism. Users can post pictures to which others can react to or comment on.
