@@ -34,3 +34,10 @@ MySQL - Database software.
 JavaScript - Back-end API logic, Front-end interface logic.  
 HTML - Front-end interface layout.  
 SCSS - Front-end interface styling.  
+
+### Task assignment
+Cristian - Frontend, Backend
+Teng - Database Design, Backend
+Joseph - Database Desgin, Backend
+Jason - API Backend, Frontend
+Bowen - Frontend
