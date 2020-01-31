@@ -41,3 +41,9 @@ The Instagram that the people deserve. A picture sharing platform with honest re
 * Joseph - Database Desgin, Backend
 * Jason - API Backend, Frontend
 * Bowen - Frontend
+
+### User Stories
+* As a user, I want to be able to sign up, have an account, and login to my account.
+* I want to be able to post a picture with a caption.
+* I want to be able to comment on other users' pictures.
+* I want to be able to follow other users' to mark them as my friends.
