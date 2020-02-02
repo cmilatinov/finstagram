@@ -1,6 +1,22 @@
 <template>
     <div id="app">
-        <p>HELLO</p>
         <router-view></router-view>
     </div>
 </template>
+
+<script>
+export default {
+    data() {
+        return {
+            navItems: ['Profile', 'Post a Picture', 'Logout']
+        };
+    }
+}
+</script>
+
+<style lang="scss">
+    @import './assets/style/global.scss';
+</style>
+
+<style lang="scss" scoped>
+</style>
