@@ -1,4 +1,3 @@
-const dotenv = require('dotenv');
 const express = require('express');
 const session = require('express-session');
 const app = express();
@@ -7,9 +6,10 @@ const passport = require('passport');
 const bodyParser = require('body-parser');
 
 const preprocess = require('./helpers/preprocess');
+const env = require('./helpers/environment');
 
 // Init .env
-dotenv.config();
+env.init();
 
 // HTTP codes
 global.HTTP_OK = 200;
