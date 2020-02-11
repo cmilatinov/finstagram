@@ -8,7 +8,7 @@ The Instagram that the people deserve. A picture sharing platform with honest re
 * Include features that provide users with authentic feedback on their posts
 
 ### Team members
-* 40097242 - Gang Hyun Kim - Gahyki  
+* 40097242 - Gang Hyun (Jason) Kim - Gahyki  
 * 40098297 - Cristian Milatinov - redknight990  
 * 40089560 - Teng Zhao - BladeGD  
 * 40092922 - Bowen Song - bowsong  
