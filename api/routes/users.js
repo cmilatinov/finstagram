@@ -9,34 +9,41 @@ const sendError = require('../helpers/sendError');
 
 router.post('/register', async (req, res) => {
 
-    if (utils.isEmptyOrNull(req.body, 'username', 'firstname', 'lastname', 'password'))
+    if (utils.isEmptyOrNull(req.body, 'firstname', 'lastname', 'username', 'password', 'email'))
         return res.status(HTTP_BAD_REQUEST).json({ error: 'Invalid request body.' });
 
-    let { username, firstname, lastname, password } = req.body;
+    let { username, firstname, lastname, password , email } = req.body;
 
     try {
 
         // Trim all fields
-        username = username.trim();
         firstname = firstname.trim();
         lastname = lastname.trim();
+        username = username.trim();
+        email = email.trim();
 
         // Check if email exists
         let existingUser = await db('users').select().where('username', username).first();
         if (existingUser)
             return res.status(HTTP_FORBIDDEN).json({ error: 'username is already in use.' });
 
+        // Check if username exists
+        let existingUser = await db('users').select().where('email', email).first();
+        if (existingUser)
+            return res.status(HTTP_FORBIDDEN).json({ error: 'email is already in use.' });
+
         // Field validation
         let nameRegex = /[a-zA-z]{1,}/;
-        if (!utils.test(username) || !nameRegex.test(firstname) || !nameRegex.test(lastname) || password < 8 || password > 50)
+        if (!utils.test(username) || !utils.validateEmail(email) || !nameRegex.test(firstname) || !nameRegex.test(lastname) || password < 8 || password > 50)
             return res.status(HTTP_BAD_REQUEST).json({ error: 'Username, first name, last name or password is invalid.' });
 
         // Insert user
         let user = {
-            username,
             firstname,
             lastname,
-            password: bcrypt.hashSync(password, 10)
+            username,
+            password: bcrypt.hashSync(password, 10),
+            email,
         };
         await db('users').insert(user);
 
