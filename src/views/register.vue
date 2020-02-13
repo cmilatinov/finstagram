@@ -201,6 +201,7 @@ export default {
             width: 30%;
             height: 100%;
             overflow: auto;
+            zoom: 90%;
 
             .form {
                 min-height: 100%;

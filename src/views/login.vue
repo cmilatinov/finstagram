@@ -112,6 +112,7 @@ export default {
         .form-container {
             width: 30%;
             overflow: auto;
+            zoom: 90%;
 
             .form {
                 width: 100%;
