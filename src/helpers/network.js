@@ -10,8 +10,8 @@ export class Network {
         });
     }
 
-    async get(url, params = {}){
-        return this.axios.get(url, { params });
+    async get(url, config = {}){
+        return this.axios.get(url, config);
     }
 
     async post(url, body = {}, params = {}){

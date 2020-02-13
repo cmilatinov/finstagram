@@ -6,13 +6,13 @@ const db = require('./db');
 
 // Custom local authentication strategy, authenticate against database
 passport.use(new LocalStrategy({
-    usernameField: 'email',
+    usernameField: 'username',
     passwordField: 'password'
-}, async (email, pass, done) => {
+}, async (username, pass, done) => {
     try {
         
         // Find user
-        let user = await db('users').select().where('email', email).first();
+        let user = await db('users').select().where('username', username).orWhere('email', username).first();
 
         // No such user, send error
         if(!user)
@@ -53,13 +53,3 @@ passport.deserializeUser(async (id, done) => {
         done(err);
     }
 });
-
-// Middleware to return 401 in json format if authentication fails
-module.export = (req, res, next) => {
-    passport.authenticate('local', (err, user, info) => {
-        if(err || !user)
-            return res.status(HTTP_UNAUTHORIZED).json({ error: err.message || 'Please login to use this feature.' });
-        
-        next();
-    })(req, res, next);
-}

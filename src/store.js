@@ -5,13 +5,19 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
     state: {
+        user: null
     },
     mutations: {
-        authSuccess(_, user) {
-            this.$session.start();
-            Object.keys(user).forEach(key => this.$session.set(key, user[key]));
+        authSuccess(state, user) {
+            state.user = user;
         } 
     },
     getters: {
+        isAuthenticated(state) {
+            return state.user !== null;
+        },
+        user(state) {
+            return state.user;
+        }
     },
 });

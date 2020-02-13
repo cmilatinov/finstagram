@@ -3,6 +3,7 @@ const session = require('express-session');
 const app = express();
 const cors = require('cors');
 const passport = require('passport');
+const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 
 const preprocess = require('./helpers/preprocess');
@@ -19,7 +20,13 @@ global.HTTP_FORBIDDEN = 403;
 global.HTTP_INTERNAL_ERROR = 500;
 
 // Init cors, express-sessions, passport, body-parser
-app.use(cors());
+app.use(cors({
+    credentials: true,
+    origin: process.env.APP_URL
+}));
+app.use(cookieParser());
+app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.json({limit: '50mb'}));
 app.use(session({
     key: 'session',
     secret: 'session_secret',
@@ -28,8 +35,6 @@ app.use(session({
 }));
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(bodyParser.urlencoded({extended: false}));
-app.use(bodyParser.json({limit: '50mb'}));
 app.use(preprocess);
 
 // Init passport authentication strategy
@@ -38,6 +43,9 @@ require('./helpers/passport');
 // Setup routes
 const index = require('./routes/index');
 app.use('/', index);
+
+const users = require('./routes/users');
+app.use('/users', users);
 
 // Listen on port
 const port = process.env.PORT || 3000;

@@ -1,18 +1,20 @@
 const express = require('express');
 const router = express();
-const passport = require('passport');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
+
+const auth = require('../helpers/auth');
 const needAuth = require('../helpers/needAuth');
 const db = require('../helpers/db');
 const utils = require('../helpers/utils');
 const sendError = require('../helpers/sendError');
 
+
 router.post('/register', async (req, res) => {
 
-    if (utils.isEmptyOrNull(req.body, 'firstname', 'lastname', 'username', 'password', 'email'))
+    if(utils.fieldsEmptyOrNull(req.body, 'firstname', 'lastname', 'username', 'password', 'email'))
         return res.status(HTTP_BAD_REQUEST).json({ error: 'Invalid request body.' });
 
-    let { username, firstname, lastname, password , email } = req.body;
+    let { username, firstname, lastname, password, email } = req.body;
 
     try {
 
@@ -22,19 +24,15 @@ router.post('/register', async (req, res) => {
         username = username.trim();
         email = email.trim();
 
-        // Check if email exists
-        let existingUser = await db('users').select().where('username', username).first();
+        // Check if username or email exists
+        let existingUser = await db('users').select().where('username', username).orWhere('email', email).first();
         if (existingUser)
-            return res.status(HTTP_FORBIDDEN).json({ error: 'username is already in use.' });
-
-        // Check if username exists
-        let existingUser = await db('users').select().where('email', email).first();
-        if (existingUser)
-            return res.status(HTTP_FORBIDDEN).json({ error: 'email is already in use.' });
+            return res.status(HTTP_FORBIDDEN).json({ error: (existingUser.email === email ? 'Email' : 'Username') + ' is already in use.' });
 
         // Field validation
-        let nameRegex = /[a-zA-z]{1,}/;
-        if (!utils.test(username) || !utils.validateEmail(email) || !nameRegex.test(firstname) || !nameRegex.test(lastname) || password < 8 || password > 50)
+        let nameRegex = /^[A-Za-z]+$/;
+        let usernameRegex = /^[A-Za-z0-9_-]+$/;
+        if (!usernameRegex.test(username) || !utils.validateEmail(email) || !nameRegex.test(firstname) || !nameRegex.test(lastname) || password.length < 8 || password.length > 50)
             return res.status(HTTP_BAD_REQUEST).json({ error: 'Username, first name, last name or password is invalid.' });
 
         // Insert user
@@ -56,11 +54,21 @@ router.post('/register', async (req, res) => {
 
 });
 
-router.post('/login', passport.authenticate('local'), needAuth, (req, res) => {
-    res.json(req.user);
+router.post('/login', auth, (req, res) => {
+    let user = {...req.user};
+    delete user.password;
+    res.json(user);
+});
+
+router.get('/logout', needAuth, (req, res) => {
+    req.logout();
+    res.json({ msg: 'User has successfully been logged out.' });
 });
 
 router.get('/current', needAuth, (req, res) => {
-    res.json(req.user);
+    let user = {...req.user};
+    delete user.password;
+    res.json(user);
 });
 
+module.exports = router;

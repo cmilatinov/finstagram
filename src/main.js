@@ -15,6 +15,8 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import store from './store';
 import router from './router';
 
+import global from './mixins/global';
+
 Vue.config.productionTip = true;
 
 // Font Awesome
@@ -26,6 +28,9 @@ Vue.use(BootstrapVue);
 
 // SWAL
 Vue.use(VueSweetalert2);
+
+// Global mixin
+Vue.mixin(global);
 
 new Vue({
     store,
