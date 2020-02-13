@@ -3,6 +3,7 @@ import VueRouter from 'vue-router';
 
 import Home from './views/home';
 import Login from './views/login';
+import Post from './views/post';
 
 Vue.use(VueRouter);
 
@@ -17,6 +18,11 @@ export default new VueRouter({
             name: 'login',
             path: '/login',
             component: Login
+        },
+        {
+            name: 'post',
+            path: '/post',
+            component: Post
         }
     ]
 });
