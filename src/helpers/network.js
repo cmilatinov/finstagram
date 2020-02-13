@@ -2,10 +2,10 @@ import axios from 'axios';
 
 export class Network {
 
-    constructor(url = 'http://localhost:3000'){
+    constructor(){
         this.axios = axios.create();
         this.axios.interceptors.request.use(config => {
-            config.url = `${url}${config.url}`;
+            config.url = `${process.env.VUE_APP_API_URL}${config.url}`;
             return config;
         });
     }

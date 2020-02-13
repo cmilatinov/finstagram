@@ -2,9 +2,9 @@
   "name": "finstagram",
   "version": "1.0.0",
   "scripts": {
-    "start": "start cmd /c \"cd api && npm start\" && npm run serve",
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
+    "start": "start cmd /c \"cd api && npm start\" && npm run local",
+    "local": "vue-cli-service serve --mode dev",
+    "live": "vue-cli-service build --mode live",
     "lint": "vue-cli-service lint"
   },
   "description": "The Instagram that the people deserve. A picture sharing platform with honest reactions for down to earth users who won't shy away from a little constructive criticism. Users can post pictures to which others can react to or comment on.",
