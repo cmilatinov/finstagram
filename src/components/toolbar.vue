@@ -21,7 +21,7 @@ export
 
 <script>
 export default {
-  name: "component-test",
+  name: "navigation-bar",
   data() {
     return {};
   }
