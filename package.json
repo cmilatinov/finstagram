@@ -2,7 +2,7 @@
   "name": "finstagram",
   "version": "1.0.0",
   "scripts": {
-    "start": "start cmd /c \"cd api && npm start\" && npm run live",
+    "start": "start cmd /c \"cd api && npm start\" && npm run local",
     "local": "vue-cli-service serve --mode dev",
     "build": "vue-cli-service build --mode live",
     "live": "node ./server",
