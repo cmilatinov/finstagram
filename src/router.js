@@ -4,6 +4,7 @@ import VueRouter from 'vue-router';
 import Home from './views/home';
 import Login from './views/login';
 import Register from './views/register';
+import Post from './views/post';
 
 import store from './store';
 import network from './helpers/network';
@@ -66,6 +67,12 @@ export default new VueRouter({
             path: '/register',
             component: Register,
             beforeEnter: ifNotAuthenticated
+        },
+        {
+            name: 'post',
+            path: '/post',
+            component: Post,
+            beforeEnter: ifAuthenticated
         }
     ]
 });
