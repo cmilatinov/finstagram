@@ -17,7 +17,11 @@ global.HTTP_OK = 200;
 global.HTTP_BAD_REQUEST = 400;
 global.HTTP_UNAUTHORIZED = 401;
 global.HTTP_FORBIDDEN = 403;
+global.HTTP_NOT_FOUND = 404;
 global.HTTP_INTERNAL_ERROR = 500;
+
+// Image directory
+global.IMAGE_DIR = './images';
 
 // Init cors, express-sessions, passport, body-parser
 app.use(cors({
@@ -46,6 +50,12 @@ app.use('/', index);
 
 const users = require('./routes/users');
 app.use('/users', users);
+
+const posts = require('./routes/posts');
+app.use('/posts', posts);
+
+const images = require('./routes/images');
+app.use('/images', images);
 
 // Listen on port
 const port = process.env.PORT || 3000;

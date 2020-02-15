@@ -1,11 +1,19 @@
 <template>
     <div id="app">
-        <router-view></router-view>
+        <toolbar v-if="$route.name !== 'login' && $route.name !== 'register'"></toolbar>
+        <keep-alive>
+            <router-view></router-view>
+        </keep-alive>
     </div>
 </template>
 
 <script>
+import toolbar from './components/toolbar';
+
 export default {
+    components: {
+        toolbar
+    },
     data() {
         return {
             navItems: ['Profile', 'Post a Picture', 'Logout']
@@ -16,7 +24,4 @@ export default {
 
 <style lang="scss">
     @import './assets/style/global.scss';
-</style>
-
-<style lang="scss" scoped>
 </style>

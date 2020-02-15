@@ -73,8 +73,8 @@
 </template>
 
 <script>
-import utils from '../helpers/utils';
-import network from '../helpers/network';
+import utils from '@/helpers/utils';
+import network from '@/helpers/network';
 
 export default {
     data() {
@@ -99,11 +99,11 @@ export default {
                 email: this.email,
                 username: this.username,
                 password: this.password
-            }).then(_ => this.$swal({
+            }).then(() => this.$swal({
                 title: 'Registration Complete',
                 text: 'You will now be redirected to the login page.',
                 icon: 'success'
-            }).then(_ => this.$router.push({ name: 'login' })))
+            }).then(() => this.$router.push({ name: 'login' })))
             .catch(err => this.$swal({
                 title: 'Failed to Complete Registration',
                 text: err.response.data.error || 'Could not connect to server.',
@@ -182,7 +182,6 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
-    background: linear-gradient(45deg, #7474BF, #348AC7);
 
     .login-container {
         width: 80%;

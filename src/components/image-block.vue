@@ -1,30 +1,79 @@
 <template>
     <b-card
-    class="p"
-    body-bg-variant="border-white"
-    img-src='https://d197holp4eo326.cloudfront.net/wp-content/uploads/2018/06/25032238/6212F714-3E45-4557-A733-AA92534531B6.jpeg'
-    >
-    <b-card-header>
-      car
-    </b-card-header>
-      <b-card-text>
-        HELP HELP HELP
-      </b-card-text>
+		body-bg-variant="border-white"
+		class="card">
+
+		<b-card-body>
+			<b-card-text>
+				Posted by <strong><i>{{poster.username}}</i></strong>
+				<span style="float: right">{{Math.floor(Math.random() * 7 + 3)}}{{Math.random() > 0.5 ? 'd' : 'h'}}</span>
+			</b-card-text>
+		</b-card-body>
+
+		<div class="card-image">
+			<b-card-img :src="image"/>
+			<div class="image-overlay"></div>
+		</div>
+
+		<b-card-body>
+			<b-card-text>
+				<i>{{caption}}</i>
+			</b-card-text>
+		</b-card-body>
+
     </b-card>
 </template>
 
 <script>
 export default {
-  name: 'image-block',
-  data (){
-    return{}
-  }
+	props: {
+		caption: {
+			type: String,
+			default: ''
+		},
+		image: {
+			type: String,
+			default:() => `https://picsum.photos/${Math.floor(Math.random() * 300 + 200)}/${Math.floor(Math.random() * 300 + 200)}`
+		},
+		poster: {
+			type: Object,
+			default: () => ({ username: 'anonymous' })
+		}
+	},
+	data() {
+		return {};
+	}
 }
 </script>
 
 <style lang='scss' scoped>
-.p{
-  padding-top:5px;
-  padding-bottom:5px;
+.card {
+	min-width: 5rem;
+	max-width: 25rem;
+	margin: 2rem 1rem;
+
+	& > * {
+		padding: 0;
+	}
+}
+
+.card-image {
+	position: relative;
+
+	.image-overlay {
+		position: absolute;
+		top: 0;
+		left: 0;
+		bottom: 0;
+		right: 0;
+		background: rgba(0, 0, 0, 0.5);
+		opacity: 0;
+		transition: 0.2s;
+		border-radius: calc(0.25rem - 1px);
+
+		&:hover {
+			opacity: 1;
+		}
+	}
 }
 </style>

@@ -32,7 +32,7 @@
 </template>
 
 <script>
-import network from '../helpers/network';
+import network from '@/helpers/network';
 
 export default {
     data() {
@@ -94,7 +94,6 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
-    background: linear-gradient(45deg, #7474BF, #348AC7);
 
     .login-container {
         width: 80%;
@@ -157,6 +156,14 @@ export default {
             background-position: center center;
             box-shadow: inset 0 0 300px;
         }
+    }
+
+    .image-container {
+        flex: 1;
+        background: url('../assets/img/login.jpg');
+        background-size: cover;
+        background-position: center center;
+        box-shadow: inset 0 0 300px;
     }
 }
 
