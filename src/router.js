@@ -44,7 +44,7 @@ function checkAuth() {
             store.commit('authSuccess', res.data);
             resolve(true);
         })
-        .catch(_ => resolve(false));
+        .catch(() => resolve(false));
     });
 }
 
