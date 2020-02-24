@@ -71,4 +71,43 @@ router.get('/current', needAuth, (req, res) => {
     res.json(user);
 });
 
+router.post('/follow',needAuth, async (req, res) => {
+
+    if(utils.fieldsEmptyOrNull(req.body, 'followerid'))
+        return res.status(HTTP_BAD_REQUEST).json({ error: 'Invalid request body.' });
+
+    try {
+        let followings = await db ('followers').select().where('userid', req.user.id).andWhere('followerid', req.body.followerid).first();
+        if(followings)
+            return res.status(HTTP_BAD_REQUEST).json({ error: 'Already following this user.' }); 
+        
+        await db('followers').insert({
+            userid: req.user.id,
+            followerid: req.body.followerid
+        });
+
+        res.json({ msg: 'Success'});
+
+    } catch (err) {
+        sendError(res, err);
+    }
+
+});
+
+router.post('/unfollow',needAuth, async (req, res) => {
+
+    if(utils.fieldsEmptyOrNull(req.body, 'followerid'))
+        return res.status(HTTP_BAD_REQUEST).json({ error: 'Invalid request body.' });
+
+    try {
+        await db('followers').where('userid', req.user.id).andWhere('followerid', req.body.followerid).del()
+
+        res.json({ msg: 'Success'});
+
+    } catch (err) {
+        sendError(res, err);
+    }
+
+});
+
 module.exports = router;
