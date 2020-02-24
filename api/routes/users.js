@@ -110,4 +110,36 @@ router.post('/unfollow',needAuth, async (req, res) => {
 
 });
 
+router.post('/edit',needAuth, async (req, res) => {
+
+    if(!Object.keys(req.body).find(x => x === 'firstname' || x === 'lastname' || x === 'username'))
+        return res.status(HTTP_BAD_REQUEST).json({ error: 'Invalid request body.' });
+    
+    const keys = ['firstname', 'lastname', 'username']
+
+    try {
+
+        // Check if username already exists
+        if (!utils.isNullOrUndefined(req.body.username) && await db('users').select().where('username', req.body.username).first())
+            return res.status(HTTP_FORBIDDEN).json({ error:'Username is already in use.' });
+
+        let updateObj = {};
+        
+        // Trim all fields
+        keys.forEach(key => {
+            if(!utils.isNullOrUndefined(req.body[key])){
+                req.body[key].trim();
+                updateObj[key] = req.body[key];
+            }
+        });
+
+        await db('users').where('id', req.user.id).update(updateObj);
+
+        res.json({ msg: 'Success' });
+
+    } catch (err) {
+        sendError(res, err);
+    }
+});
+
 module.exports = router;
