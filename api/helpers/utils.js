@@ -1,6 +1,6 @@
 module.exports = { 
     isNullOrUndefined(obj) {
-        return obj === undefined || obj === null;
+        return obj === undefined || obj === null || obj === '';
     },
     fieldsEmptyOrNull(obj, ...fields) {
         for(let field of fields)
