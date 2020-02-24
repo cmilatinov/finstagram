@@ -19,26 +19,66 @@
 		</div>
 		<div class="right">
 			<b-input-group>
-				<b-input id="search" type="text" placeholder="Search here"></b-input>
+				<b-input ref="search" id="search" v-model="search" type="text" placeholder="Search here" @focus="showResults = true" @blur="showResults = false"></b-input>
 				<b-input-group-append>
-					<b-button variant="outline-primary">
+					<b-button variant="outline-primary" @click="onSubmitSearch">
 						<icon icon="search" />
 					</b-button>
 				</b-input-group-append>
+				<div class="dropdown" :class="{ shown: showResults }">
+					<div :key="result.id" v-for="result in results">
+						{{result.firstname}} {{result.lastname}} ({{result.username}})
+					</div>
+				</div>
 			</b-input-group>
 		</div>
 	</div>
 </template>
 
 <script>
+import network from '../helpers/network';
+
 export default {
 	data() {
-		return {};
+		return {
+			search: '',
+			results: [],
+			showResults: false
+		};
+	},
+	methods: {
+		onSubmitSearch() {
+			network.post('/search', {
+				search: this.search
+			}, { withCredentials: true }).then(res => {
+				this.results = res.data.users;
+				this.$refs.search.focus();
+			});
+		}
 	}
 }
 </script>
 
 <style lang="scss" scoped>
+
+.dropdown {
+	position: absolute;
+	top: 100%;
+	width: 100%;
+	border: 1px solid rgba(0, 0, 0, 0.15);
+	padding: 1em;
+	background-color: white;
+	border-radius: 3px;
+	margin-top: 0.3em;
+	z-index: 100;
+	opacity: 0;
+	transition: 0.2s;
+
+	&.shown {
+		opacity: 1;
+	}
+}
+
 .navbar {
 	display: flex;
 	flex-direction: row;
