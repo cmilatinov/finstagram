@@ -70,7 +70,7 @@ export default new VueRouter({
     },
     {
       name: "profile",
-      path: "/profile",
+      path: "/profile/:id",
       component: Profile,
       beforeEnter: ifAuthenticated
     }

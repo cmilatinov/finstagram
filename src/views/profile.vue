@@ -1,10 +1,26 @@
 <template>
   <div class="scroll-container">
-    <b-jumbotron bg-variant="transparent" header-level="5" :header="name">
-      <template v-slot:lead>
-        {{ nbPosts }} POSTS &nbsp; {{ nbFollowers }} FOLLOWERS &nbsp;
-        {{ nbFollowing }} FOLLOWING
-      </template>
+    <b-jumbotron
+      bg-variant="transparent"
+      header-level="5"
+      :header="profileduser.username"
+    >
+      <p>
+        <template v-slot:lead>
+          {{ profileduser.nbPosts }} POSTS &nbsp;
+          {{ profileduser.nbFollowers }} FOLLOWERS &nbsp;
+          {{ profileduser.nbFollowings }} FOLLOWING
+        </template>
+      </p>
+      <b-button
+        v-if="!this.profileduser.followed"
+        variant="outline-primary"
+        @click="onProfileButtonClick"
+        >Follow</b-button
+      >
+      <b-button v-else variant="outline-primary" @click="onUnfollowClick">
+        Unfollow
+      </b-button>
     </b-jumbotron>
     <div><imagewall :posts="posts" /></div>
   </div>
@@ -12,28 +28,68 @@
 
 <script>
 import imagewall from "@/components/image-wall.vue";
+import network from "@/helpers/network";
 
 export default {
   components: {
     imagewall
   },
+
   data() {
     return {
-      name: "",
-      nbFollowers: 0,
-      nbFollowing: 0,
-      nbPosts: 0,
+      profileduser: {},
       posts: []
     };
   },
   mounted() {
-    this.name = "Donald Trump";
-    this.nbFollowers = 0;
+    network
+      .get(`/users/${this.$route.params.id}`, { withCredentials: true })
+      .then(res => (this.profileduser = res.data));
     for (let i = 0; i < 5; i++)
       this.posts.push({
         id: i,
         caption: `HUGE`
       });
+  },
+  methods: {
+    onProfileButtonClick() {
+      network
+        .post(
+          "/users/follow",
+          {
+            userid: this.user.id,
+            followerid: this.profileduser.id
+          },
+          { withCredentials: true }
+        )
+        .then(_ => this.profileduser.nbFollowers++)
+        .catch(_ =>
+          this.$swal({
+            title: "Follow Failed",
+            text: "Could not follow user.",
+            icon: "error"
+          })
+        );
+    },
+    onUnfollowClick() {
+      network
+        .post(
+          "/users/unfollow",
+          {
+            userid: this.user.id,
+            followerid: this.profileduser.id
+          },
+          { withCredentials: true }
+        )
+        .then(_ => this.profileduser.nbFollowers--)
+        .catch(_ =>
+          this.$swal({
+            title: "Unfollow Failed",
+            text: "Could not unfollow user.",
+            icon: "error"
+          })
+        );
+    }
   }
 };
 </script>
