@@ -5,6 +5,7 @@ import Home from './views/home';
 import Login from './views/login';
 import Register from './views/register';
 import Post from './views/post';
+import PostView from './views/post-view';
 
 import store from './store';
 import network from './helpers/network';
@@ -72,6 +73,12 @@ export default new VueRouter({
             name: 'post',
             path: '/post',
             component: Post,
+            beforeEnter: ifAuthenticated
+        }, 
+        {
+            name: 'post-view',
+            path: '/post-view/:id',
+            component: PostView,
             beforeEnter: ifAuthenticated
         }
     ]
