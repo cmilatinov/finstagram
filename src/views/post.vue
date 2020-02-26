@@ -73,7 +73,7 @@ export default {
 			if(!this.validForm)
 				return this.imageSrc = false;
 			try {
-				await network.post('/posts/new', {
+				let res = await network.post('/posts/new', {
 					image: await this.imageToBase64(),
 					caption: this.caption
 				}, { withCredentials: true });
@@ -82,9 +82,7 @@ export default {
 					title: 'Post Successfully Created',
 					text: 'You will now be redirected to your new post.',
 					icon: 'success'
-				}).then(() => {
-					/* TODO redirect to post page */
-				});
+				}).then(_ => this.$router.push(`/post-view/${res.data.postid}`));
 			} catch(err) {
 				this.$swal({
 					title: 'Post Upload Failed',
