@@ -220,4 +220,43 @@ router.get("/:id", needAuth, async (req, res) => {
   }
 });
 
+router.get('/:id/posts', async (req, res) => {
+    try{
+
+        let posts = await db('posts')
+        .innerJoin('users', 'posts.userid', 'users.id')
+        .innerJoin('images', 'posts.imageid', 'images.id')
+        .select('posts.*', 'users.firstname', 'users.lastname', 'users.username', 'images.caption')
+        .orderBy('id', 'desc')
+        .where('userid', req.params.id);
+
+        posts.forEach(post => {
+            let user = {
+                id: post.userid,
+                username: post.username,
+                firstname: post.firstname,
+                lastname: post.lastname
+            };
+            let image = {
+                id: post.imageid,
+                caption: post.caption
+            };
+            post.user = user;
+            post.image = image;
+            delete post.userid;
+            delete post.username;
+            delete post.firstname;
+            delete post.lastname;
+            delete post.imageid;
+            delete post.caption;
+        });
+
+        res.json({
+            posts
+        });
+    } catch(err) {
+        sendError(res, err);
+    }
+});
+
 module.exports = router;
