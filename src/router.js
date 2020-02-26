@@ -4,8 +4,9 @@ import VueRouter from "vue-router";
 import Home from "./views/home";
 import Login from "./views/login";
 import Register from "./views/register";
-import Post from "./views/post";
 import Profile from "./views/profile";
+import Post from "./views/post";
+import PostView from './views/post-view';
 
 import store from "./store";
 import network from "./helpers/network";
@@ -43,36 +44,42 @@ function checkAuth() {
 }
 
 export default new VueRouter({
-  routes: [
-    {
-      name: "index",
-      path: "/",
-      component: Home,
-      beforeEnter: ifAuthenticated
-    },
-    {
-      name: "login",
-      path: "/login",
-      component: Login,
-      beforeEnter: ifNotAuthenticated
-    },
-    {
-      name: "register",
-      path: "/register",
-      component: Register,
-      beforeEnter: ifNotAuthenticated
-    },
-    {
-      name: "post",
-      path: "/post",
-      component: Post,
-      beforeEnter: ifAuthenticated
-    },
-    {
-      name: "profile",
-      path: "/profile/:id",
-      component: Profile,
-      beforeEnter: ifAuthenticated
-    }
-  ]
+    routes: [
+        {
+            name: 'index',
+            path: '/',
+            component: Home,
+            beforeEnter: ifAuthenticated
+        },
+        {
+            name: 'login',
+            path: '/login',
+            component: Login,
+            beforeEnter: ifNotAuthenticated
+        },
+        {
+            name: 'register',
+            path: '/register',
+            component: Register,
+            beforeEnter: ifNotAuthenticated
+        },
+        {
+            name: "profile",
+            path: "/profile/:id",
+            component: Profile,
+            beforeEnter: ifAuthenticated
+        },
+        {
+            name: 'post',
+            path: '/post',
+            component: Post,
+            beforeEnter: ifAuthenticated
+        }, 
+        {
+            name: 'post-view',
+            path: '/post-view/:id',
+            component: PostView,
+            beforeEnter: ifAuthenticated
+        }
+    ]
 });

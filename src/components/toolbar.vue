@@ -1,56 +1,84 @@
 <template>
-  <div class="navbar">
-    <div class="left">
-      <h4 class="title">Finstagram</h4>
-    </div>
-    <div class="center">
-      <div
-        class="nav-item"
-        :class="{ active: $route.path === '/' }"
-        @click="$router.push({ path: '/' })"
-      >
-        <icon class="nav-item-icon" icon="home" />
-        <div class="nav-item-text">Home</div>
-      </div>
-      <div
-        class="nav-item"
-        :class="{ active: $route.path === '/post' }"
-        @click="$router.push({ path: '/post' })"
-      >
-        <icon class="nav-item-icon" icon="edit" />
-        <div class="nav-item-text">Post</div>
-      </div>
-      <div
-        class="nav-item"
-        :class="{ active: $route.path === '/profile/' + user.id }"
-        @click="$router.push({ path: '/profile/' + user.id })"
-      >
-        <icon class="nav-item-icon" icon="user-alt" />
-        <div class="nav-item-text">Profile</div>
-      </div>
-    </div>
-    <div class="right">
-      <b-input-group>
-        <b-input id="search" type="text" placeholder="Search here"></b-input>
-        <b-input-group-append>
-          <b-button variant="outline-primary">
-            <icon icon="search" />
-          </b-button>
-        </b-input-group-append>
-      </b-input-group>
-    </div>
-  </div>
+	<div class="navbar">
+		<div class="left">
+			<h4 class="title">Finstagram</h4>
+		</div>
+		<div class="center">
+			<div class="nav-item" :class="{ active: $route.path === '/' }" @click="$router.push({ path: '/' })">
+				<icon class="nav-item-icon" icon="home" />
+				<div class="nav-item-text">Home</div>
+			</div>
+			<div class="nav-item" :class="{ active: $route.path === '/post' }" @click="$router.push({ path: '/post' })">
+				<icon class="nav-item-icon" icon="edit" />
+				<div class="nav-item-text">Post</div>
+			</div>
+			<div class="nav-item" :class="{ active: $route.path === '/profile' }" @click="$router.push({ path: '/profile' })">
+				<icon class="nav-item-icon" icon="user-alt" />
+				<div class="nav-item-text">Profile</div>
+			</div>
+		</div>
+		<div class="right">
+			<b-input-group>
+				<b-input ref="search" id="search" v-model="search" type="text" placeholder="Search here" @focus="showResults = true" @blur="showResults = false"></b-input>
+				<b-input-group-append>
+					<b-button variant="outline-primary" @click="onSubmitSearch">
+						<icon icon="search" />
+					</b-button>
+				</b-input-group-append>
+				<div class="dropdown" :class="{ shown: showResults }">
+					<div :key="result.id" v-for="result in results">
+						{{result.firstname}} {{result.lastname}} ({{result.username}})
+					</div>
+				</div>
+			</b-input-group>
+		</div>
+	</div>
 </template>
 
 <script>
+import network from '../helpers/network';
+
 export default {
-  data() {
-    return {};
-  }
-};
+	data() {
+		return {
+			search: '',
+			results: [],
+			showResults: false
+		};
+	},
+	methods: {
+		onSubmitSearch() {
+			network.post('/search', {
+				search: this.search
+			}, { withCredentials: true }).then(res => {
+				this.results = res.data.users;
+				this.$refs.search.focus();
+			});
+		}
+	}
+}
 </script>
 
 <style lang="scss" scoped>
+
+.dropdown {
+	position: absolute;
+	top: 100%;
+	width: 100%;
+	border: 1px solid rgba(0, 0, 0, 0.15);
+	padding: 1em;
+	background-color: white;
+	border-radius: 3px;
+	margin-top: 0.3em;
+	z-index: 100;
+	opacity: 0;
+	transition: 0.2s;
+
+	&.shown {
+		opacity: 1;
+	}
+}
+
 .navbar {
   display: flex;
   flex-direction: row;

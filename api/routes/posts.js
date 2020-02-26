@@ -85,7 +85,7 @@ router.get('/:postid', async (req, res) => {
         let user = await db('users').select().where('id', post.userid).first();
         let reactions = await db('reactions').select();
         let comments = await db('comments').select().where('postid', post.id);
-        let image = await db('images').select().where('id', post.imageid);
+        let image = await db('images').select().where('id', post.imageid).first();
 
         delete user.password;
         delete user.email;
