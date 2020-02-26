@@ -80,93 +80,92 @@ export default {
 }
 
 .navbar {
-	display: flex;
-	flex-direction: row;
-	justify-content: space-between;
-	align-items: center;
-	flex-wrap: wrap;
-	padding: 0 2em;
-	border-bottom: 1px solid rgba(0, 0, 0, 0.125);
-	background-color: white;
-	
-	.right > *{
-		margin: 1em 0 1em 0;
-	}
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  padding: 0 2em;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+  background-color: white;
 
-	.title {
-		margin: 0 !important;
-	}
+  .right > * {
+    margin: 1em 0 1em 0;
+  }
+
+  .title {
+    margin: 0 !important;
+  }
 }
 
 .center {
-	display: flex;
-	height: 100%;
-	flex-direction: row;
-	align-items: flex-end;
+  display: flex;
+  height: 100%;
+  flex-direction: row;
+  align-items: flex-end;
 }
 
 .nav-item {
-	position: relative;
-	font-weight: 600;
-	font-size: 1.15em;
-	margin: 0 0.5em;
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-	color: black;
-	opacity: 0.4;
-	cursor: pointer;
-	
-	.nav-item-icon {
-		margin-left: 15px;
-		transition: 0.2s;
-	}
+  position: relative;
+  font-weight: 600;
+  font-size: 1.15em;
+  margin: 0 0.5em;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  color: black;
+  opacity: 0.4;
+  cursor: pointer;
 
-	.nav-item-text {
-		padding: 15px;
-		transition: 0.2s;
-	}
+  .nav-item-icon {
+    margin-left: 15px;
+    transition: 0.2s;
+  }
 
-	&:hover{
-		opacity: 0.6;
+  .nav-item-text {
+    padding: 15px;
+    transition: 0.2s;
+  }
 
-		.nav-item-icon {
-			transform: translateX(3px);
-		}
+  &:hover {
+    opacity: 0.6;
 
-		.nav-item-text {
-			transform: translateX(-3px);
-		}
-	}
-	
-	&:after {
-		position: absolute;
-		width: 0;
-		height: 3px;
-		display: block;
-		content: '';
-		bottom: 0;
-		left: 0;
-		right: 0;
-		background-color: #ffc107;
-		transition: 0.2s;
-	}
+    .nav-item-icon {
+      transform: translateX(3px);
+    }
 
-	&.active {
-		opacity: 0.9;
+    .nav-item-text {
+      transform: translateX(-3px);
+    }
+  }
 
-		.nav-item-icon {
-			transform: translateX(3px);
-		}
+  &:after {
+    position: absolute;
+    width: 0;
+    height: 3px;
+    display: block;
+    content: "";
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: #ffc107;
+    transition: 0.2s;
+  }
 
-		.nav-item-text {
-			transform: translateX(-3px);
-		}
-	}
+  &.active {
+    opacity: 0.9;
 
-	&.active:after {
-		width: 100%;
-	}
+    .nav-item-icon {
+      transform: translateX(3px);
+    }
 
+    .nav-item-text {
+      transform: translateX(-3px);
+    }
+  }
+
+  &.active:after {
+    width: 100%;
+  }
 }
 </style>
