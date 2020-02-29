@@ -3,11 +3,13 @@
 		<div class="post-container">
 			<b-card class="card">
 				<template v-slot:title>
-					<h4 style="margin-bottom: 1em"><icon icon="image" />&nbsp;&nbsp;Create New Post</h4>
+					<h4 style="margin-bottom: 1em">Create New Post</h4>
 				</template>
 				<b-row class="card-row">
 					<b-form-group class="w-100" label="Picture" label-for="image" :state="validFile" :invalid-feedback="fileState">
-						<div class="preview" :class="{ invalid: validFile !== null && !validFile }">
+						<div class="preview" 
+							:class="{ valid: validFile, invalid: validFile !== null && !validFile }" 
+							@click="_ => $refs.image.$el.children[0].click()">
 							<div class="hint">
 								<div>Preview</div>
 							</div>
@@ -15,6 +17,7 @@
 						</div>
 						<b-form-file
 							id="image"
+							ref="image"
 							v-model="image"
 							:state="validFile"
 							accept="image/*"
@@ -36,7 +39,7 @@
 				<b-row class="card-row">
 					<b-button
 						variant="outline-primary"
-						@click="onPostPicture">Post Picture</b-button>
+						@click="onPostPicture">Post</b-button>
 				</b-row>
 			</b-card>
 		</div>
@@ -51,7 +54,7 @@ export default {
 		return {
 			image: [],
 			imageSrc: null,
-			caption: null
+			caption: null,
 		};
 	},
 	methods: {
@@ -78,12 +81,17 @@ export default {
 					caption: this.caption
 				}, { withCredentials: true });
 
+				this.image = [];
+				this.imageSrc = null;
+				this.caption = null;
+
 				this.$swal({
 					title: 'Post Successfully Created',
 					text: 'You will now be redirected to your new post.',
 					icon: 'success'
-				}).then(_ => this.$router.push(`/post-view/${res.data.postid}`));
+				}).then(_ => this.navigate(`/post-view/${res.data.postid}`));
 			} catch(err) {
+				console.log(err);
 				this.$swal({
 					title: 'Post Upload Failed',
 					text: err.response && err.response.data.error ? err.response.data.error : 'An error occurred while attempting to upload the picture.',
@@ -135,7 +143,8 @@ export default {
 		
 		.card {
 			margin: 3em;
-			width: 30rem;
+			min-width: 35rem;
+			max-width: 50rem;
 
 			.card-row {
 				margin: 0.5em 1em 0 1em;
@@ -157,8 +166,13 @@ export default {
 	padding: 1em;
 	border: 1px solid rgb(206, 212, 218);
 	border-radius: 4px;
-	min-height: 15rem;
+	min-height: 20rem;
 	width: 100%;
+	cursor: pointer;
+
+	&.valid {
+		border: 1.5px solid #28A745;
+	}
 
 	&.invalid {
 		border: 1.5px solid #DC3545;
@@ -181,6 +195,7 @@ export default {
 	img {
 		z-index: 10;
 		max-width: 100%;
+		border-radius: 3px;
 	}
 }
 </style>
