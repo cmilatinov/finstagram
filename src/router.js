@@ -1,46 +1,46 @@
-import Vue from "vue";
-import VueRouter from "vue-router";
+import Vue from 'vue';
+import VueRouter from 'vue-router';
 
-import Home from "./views/home";
-import Login from "./views/login";
-import Register from "./views/register";
-import Profile from "./views/profile";
-import Post from "./views/post";
+import Home from './views/home';
+import Login from './views/login';
+import Register from './views/register';
+import Profile from './views/profile';
+import Post from './views/post';
 import PostView from './views/post-view';
 
-import store from "./store";
-import network from "./helpers/network";
+import store from './store';
+import network from './helpers/network';
 
 Vue.use(VueRouter);
 
 function ifAuthenticated(to, from, next) {
-  if (store.getters.isAuthenticated) return next();
+	if (store.getters.isAuthenticated) return next();
 
-  checkAuth().then(auth => {
-    if (auth) next();
-    else next("/login");
-  });
+	checkAuth().then(auth => {
+		if (auth) next();
+		else next('/login');
+	});
 }
 
 function ifNotAuthenticated(to, from, next) {
-  if (store.getters.isAuthenticated) return next("/");
+	if (store.getters.isAuthenticated) return next('/');
 
-  checkAuth().then(auth => {
-    if (auth) next("/");
-    else next();
-  });
+	checkAuth().then(auth => {
+		if (auth) next('/');
+		else next();
+	});
 }
 
 function checkAuth() {
-  return new Promise(resolve => {
-    network
-      .get("/users/current", { withCredentials: true })
-      .then(res => {
-        store.commit("authSuccess", res.data);
-        resolve(true);
-      })
-      .catch(() => resolve(false));
-  });
+	return new Promise(resolve => {
+		network
+		.get('/users/current', { withCredentials: true })
+		.then(res => {
+			store.commit('authSuccess', res.data);
+			resolve(true);
+		})
+		.catch(() => resolve(false));
+	});
 }
 
 export default new VueRouter({
@@ -64,9 +64,9 @@ export default new VueRouter({
             beforeEnter: ifNotAuthenticated
         },
         {
-            name: "profile",
-            path: "/profile/:id",
-            component: Profile,
+            name: 'profile',
+            path: '/profile/:userid',
+			component: Profile,
             beforeEnter: ifAuthenticated
         },
         {
@@ -77,8 +77,8 @@ export default new VueRouter({
         }, 
         {
             name: 'post-view',
-            path: '/post-view/:id',
-            component: PostView,
+            path: '/post-view/:postid',
+			component: PostView,
             beforeEnter: ifAuthenticated
         }
     ]

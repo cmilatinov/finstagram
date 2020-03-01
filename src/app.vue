@@ -8,7 +8,8 @@
 </template>
 
 <script>
-import toolbar from './components/toolbar';
+import toolbar from '@/components/toolbar';
+import network from '@/helpers/network';
 
 export default {
     components: {
@@ -18,6 +19,10 @@ export default {
         return {
             navItems: ['Profile', 'Post a Picture', 'Logout']
         };
+    },
+    mounted() {
+        network.get('/reactions/all')
+            .then(res => this.$store.commit('storeReactions', res.data.reactions));
     }
 }
 </script>
