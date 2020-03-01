@@ -19,9 +19,14 @@ export default {
 			posts: []
 		};
 	},
-	mounted() {
-		network.get('/posts/newest', { withCredentials: true })
-			.then(res => this.posts = res.data.posts);
+	activated() {
+		this.refresh();
+	},
+	methods: {
+		refresh(){
+			network.get('/posts/newest', { withCredentials: true })
+				.then(res => this.posts = res.data.posts);
+		}
 	}
 };
 </script>
