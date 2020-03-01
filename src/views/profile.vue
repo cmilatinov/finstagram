@@ -63,6 +63,9 @@ export default {
 		this.refreshUser();
 	},
 	methods: {
+		refresh(){
+			this.refreshUser();
+		},
 		refreshUser(showLoading = true) {
 			if(showLoading) this.loading = true;
 			network.get(`/users/${this.$route.params.userid}`, { withCredentials: true })
