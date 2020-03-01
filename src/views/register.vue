@@ -103,7 +103,7 @@ export default {
                 title: 'Registration Complete',
                 text: 'You will now be redirected to the login page.',
                 icon: 'success'
-            }).then(() => this.$router.push({ name: 'login' })))
+            }).then(() => this.navigate('/login')))
             .catch(err => this.$swal({
                 title: 'Failed to Complete Registration',
                 text: err.response.data.error || 'Could not connect to server.',
@@ -118,13 +118,13 @@ export default {
         validFirstname() {
             if(this.firstname === null)
                 return null;
-            let regex = /^[A-Za-z]+$/;
+            let regex = /^[A-Za-z-'\. ]+$/;
             return regex.test(this.firstname) && this.firstname.length <= 30;
         },
         validLastname() {
             if(this.lastname === null)
                 return null;
-            let regex = /^[A-Za-z]+$/;
+            let regex = /^[A-Za-z-'\. ]+$/;
             return regex.test(this.lastname) && this.lastname.length <= 30;
         },
         validEmail() {
@@ -153,10 +153,10 @@ export default {
         },
 
         firstnameState() {
-            return this.firstname === null || this.firstname.length === 0 ? 'Please enter your first name.' : 'A first name must only be composed of letters.';
+            return this.firstname === null || this.firstname.length === 0 ? 'Please enter your first name.' : 'A first name must only not contain forbidden special characters.';
         },
         lastnameState() {
-            return this.lastname === null || this.lastname.length === 0 ? 'Please enter your last name.' : 'A last name must only be composed of letters.';
+            return this.lastname === null || this.lastname.length === 0 ? 'Please enter your last name.' : 'A last name must only not contain forbidden special characters.';
         },
         emailState() {
             return this.email === null || this.email.length === 0 ? 'Please enter your email.' : 'Please enter a valid email address.';

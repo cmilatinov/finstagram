@@ -1,9 +1,7 @@
 <template>
     <div class="image-row">
-        <div class="image-column" :key="i" v-for="i in (0, 4)">
-            <imageblock class="image" 
-                :caption="item.caption" 
-                :key="item.id" v-for="item in get(i - 1, 4)" /> 
+        <div class="image-column" :key="i" v-for="i in (0, cols)">
+            <imageblock class="image" :key="post.id" v-for="post in getPostCol(i - 1, cols)" :post="post"/> 
         </div>
     </div>
 </template>
@@ -19,10 +17,14 @@ export default {
         posts: {
             type: Array,
             default: () => []
+        },
+        cols: {
+            type: Number,
+            default: 3
         }
     },
     methods: {
-        get(offset, multiple) {
+        getPostCol(offset, multiple) {
             let arr = [];
             for(let i = offset; i < this.posts.length; i += multiple)
                 arr.push(this.posts[i]);
@@ -39,8 +41,8 @@ export default {
     width: 100%;
 }
 .image-column {
-    flex: 25%;
-    max-width: 25%;
+    flex: 33%;
+    max-width: 33%;
     padding: 0 1rem;
 
     .image {
@@ -50,19 +52,13 @@ export default {
     }
 }
 
-@media screen and (max-width: 1000px) {
-    .image-column {
-        flex: 33%;
-        max-width: 33%;
-    }
-}
-@media screen and (max-width: 800px) {
+@media screen and (max-width: 1400px) {
     .image-column {
         flex: 50%;
         max-width: 50%;
     }
 }
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 900px) {
     .image-column {
         flex: 100%;
         max-width: 100%;
