@@ -5,12 +5,19 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
     state: {
-        user: null
+        user: null,
+        reactions: []
     },
     mutations: {
+        logoutSuccess(state) {
+            state.user = null;
+        },
         authSuccess(state, user) {
             state.user = user;
-        } 
+        },
+        storeReactions(state, reactions) {
+            state.reactions = reactions;
+        }
     },
     getters: {
         isAuthenticated(state) {
@@ -18,6 +25,9 @@ export default new Vuex.Store({
         },
         user(state) {
             return state.user;
+        },
+        reactions(state) {
+            return state.reactions
         }
     },
 });

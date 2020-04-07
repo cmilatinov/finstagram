@@ -11,7 +11,13 @@
                                 <b-input-group-prepend is-text>
                                     <icon icon="user-alt" :style="{ color: '#777' }"/>
                                 </b-input-group-prepend>
-                                <b-input id="username" :state="validUsername" v-model="username" type="text" placeholder="Enter your username or email"/>
+                                <b-input 
+                                    id="username" 
+                                    :state="validUsername" 
+                                    v-model="username" 
+                                    type="text" 
+                                    placeholder="Enter your username or email"
+                                    @keyup.13="onSubmitLogin"/>
                             </b-input-group>
                         </b-form-group>
                         <b-form-group :state="validPassword" :invalid-feedback="passwordState" label-for="password" label="Password">
@@ -19,7 +25,13 @@
                                 <b-input-group-prepend is-text>
                                     <icon icon="key" :style="{ color: '#777' }"/>
                                 </b-input-group-prepend>
-                                <b-input id="password" :state="validPassword" v-model="password" type="password" placeholder="Enter your password"/>
+                                <b-input 
+                                    id="password" 
+                                    :state="validPassword" 
+                                    v-model="password" 
+                                    type="password" 
+                                    placeholder="Enter your password"
+                                    @keyup.13="onSubmitLogin"/>
                             </b-input-group>
                         </b-form-group>
                     </div>
@@ -52,7 +64,7 @@ export default {
                 password: this.password
             }, { withCredentials: true }).then(res => {
                 this.$store.commit('authSuccess', res.data);
-                this.$router.push({ path: '/' });
+                this.navigate('/');
             }).catch(err => this.$swal({
                 title: 'Login Failed',
                 text: (err.response ? err.response.data.error : err.message) || 'Could not connect to server.',

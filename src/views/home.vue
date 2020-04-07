@@ -7,7 +7,8 @@
 </template>
 
 <script>
-import imagewall from "@/components/image-wall.vue";
+import imagewall from '@/components/image-wall';
+import network from '@/helpers/network';
 
 export default {
 	components: {
@@ -18,9 +19,14 @@ export default {
 			posts: []
 		};
 	},
-	mounted() {
-		for(let i = 0; i < 50; i++)
-			this.posts.push({ id: i, caption: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam nec.` });
+	activated() {
+		this.refresh();
+	},
+	methods: {
+		refresh(){
+			network.get('/posts/newest', { withCredentials: true })
+				.then(res => this.posts = res.data.posts);
+		}
 	}
 };
 </script>

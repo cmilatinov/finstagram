@@ -57,6 +57,15 @@ app.use('/posts', posts);
 const images = require('./routes/images');
 app.use('/images', images);
 
+const comments = require('./routes/comments');
+app.use('/comments', comments);
+
+const search = require('./routes/search');
+app.use('/search', search);
+
+const reactions = require('./routes/reactions');
+app.use('/reactions', reactions);
+
 // Listen on port
 const port = process.env.PORT || 3000;
 app.listen(port, _ => console.log(`Server started on port ${port}`));
