@@ -35,6 +35,54 @@ router.post('/new', needAuth, async (req, res) => {
 
 });
 
+router.post("/delete", needAuth, async (req,res) => {
+
+	if(utils.fieldsEmptyOrNull(req.body, 'postid'))
+	return res.status(HTTP_BAD_REQUEST).json({ error: 'Invalid request body.' });
+
+	let { postid } = req.body;
+
+	try{
+		// Select post by id
+		let post = await db('posts')
+		.select()
+		.where('id', postid)
+		.first();
+
+		// Check if post exists
+		if (!post)
+			return res.status(HTTP_BAD_REQUEST).json({ error: 'Post does not exist.' });
+		
+		//check if userid of post is same as auth
+		if(req.user.id != post.userid)
+			return res.status(HTTP_BAD_REQUEST).json({ error: 'Does not have authorization.' });
+
+		//remove image
+		await db ('images')
+			.where('imageid', post.imageid)
+			.del();
+
+		//remove comment
+		await db ('comments')
+			.where('postid', post.id)
+			.del();
+
+		//remove reactions
+		await db ('post_reactions')
+			.where('postid', post.id)
+			.del();
+
+		//remove postid
+		await db ('posts')
+			.where('id', post.id)
+			.del();
+
+	} catch(err) {
+		sendError (res, err);
+	}
+
+});
+
 router.get('/newest', needAuth, async (req, res) => {
     try{
 
