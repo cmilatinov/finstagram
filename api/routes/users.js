@@ -128,6 +128,7 @@ router.post('/edit', needAuth, async (req, res) => {
 		return res.status(HTTP_BAD_REQUEST).json({ error: 'Invalid request body.' });
 
 	const keys = ['firstname', 'lastname', 'username'];
+	
 
 	try {
 		// Check if username already exists
@@ -144,11 +145,28 @@ router.post('/edit', needAuth, async (req, res) => {
 			}
 		});
 
+		// Validation
+		const nameRegex = /^[A-Za-z]+$/;
+		const usernameRegex = /^[A-Za-z0-9_-]+$/;
+		if(updateObj.username && !usernameRegex.test(updateObj.username))
+			return res.status(HTTP_BAD_REQUEST).json({ error: 'Invalid username.' });
+
+		if(updateObj.firstname && !nameRegex.test(updateObj.firstname))
+			return res.status(HTTP_BAD_REQUEST).json({ error: 'Invalid first name.' });
+
+		if(updateObj.lastname && !nameRegex.test(updateObj.lastname))
+			return res.status(HTTP_BAD_REQUEST).json({ error: 'Invalid last name.' });
+		
+		// Insert
 		await db('users')
 		.where('id', req.user.id)
 		.update(updateObj);
 
-		res.json({ msg: 'Success' });
+		// Return user
+		let user = await db('users').select().where('id', req.user.id).first();
+		delete user.password;
+		res.json({ user });
+		
 	} catch (err) {
 		sendError(res, err);
 	}
@@ -230,9 +248,6 @@ router.get('/:id/posts', needAuth, async (req, res) => {
 		.where('userid', req.params.id);
 		
 		let posts = await postsQuery;
-
-		console.log(posts);
-		console.log(postsQuery.toString());
 
 		if(posts.length === 1 && posts[0].id === null)
 			return res.json({ posts: [] });
