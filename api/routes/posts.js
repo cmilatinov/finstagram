@@ -59,7 +59,7 @@ router.post("/delete", needAuth, async (req,res) => {
 
 		//remove image
 		await db ('images')
-			.where('imageid', post.imageid)
+			.where('id', post.imageid)
 			.del();
 
 		//remove comment
@@ -68,7 +68,7 @@ router.post("/delete", needAuth, async (req,res) => {
 			.del();
 
 		//remove reactions
-		await db ('post_reactions')
+		await db ('posts_reactions')
 			.where('postid', post.id)
 			.del();
 
