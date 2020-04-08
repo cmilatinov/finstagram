@@ -230,7 +230,7 @@ export default {
                 align-items: center;
                 justify-content: center;
                 padding: 0.5em;
-                font-size: 3em;
+                font-size: 2.5em;
                 flex-wrap: wrap;
 
                 .overlay-row {
