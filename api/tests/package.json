@@ -1,0 +1,13 @@
+{
+  "name": "tests",
+  "version": "1.0.0",
+  "main": "test.js",
+  "scripts": {
+    "start": "node ./test.js",
+    "unit": "node ./unit_test.js"
+  },
+  "dependencies": {
+    "axios": "^0.19.2",
+    "colors": "^1.4.0"
+  }
+}
