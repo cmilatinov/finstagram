@@ -1,8 +1,8 @@
 <template>
     <div id="app">
-        <toolbar v-if="$route.name !== 'login' && $route.name !== 'register'"></toolbar>
+        <toolbar v-if="$route.name !== 'login' && $route.name !== 'register'" @click="onClickNav"></toolbar>
         <keep-alive>
-            <router-view></router-view>
+            <router-view ref="view"></router-view>
         </keep-alive>
     </div>
 </template>
@@ -23,6 +23,12 @@ export default {
     mounted() {
         network.get('/reactions/all')
             .then(res => this.$store.commit('storeReactions', res.data.reactions));
+    },
+    methods: {
+        onClickNav(){
+            if(this.$refs.view && this.$refs.view.refresh)
+                this.$refs.view.refresh();
+        }
     }
 }
 </script>

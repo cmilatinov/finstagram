@@ -5,17 +5,17 @@
 		</div>
 		<div class="center">
 			<div class="nav-item" :class="{ active: $route.path === '/' }" 
-				@click="_ => navigate('/')">
+				@click="_ => onClickNav('/')">
 				<icon class="nav-item-icon" icon="home" />
 				<div class="nav-item-text">Home</div>
 			</div>
 			<div class="nav-item" :class="{ active: $route.path === '/post' }" 
-				@click="_ => navigate('/post')">
+				@click="_ => onClickNav('/post')">
 				<icon class="nav-item-icon" icon="edit" />
 				<div class="nav-item-text">Post</div>
 			</div>
 			<div class="nav-item" :class="{ active: user && $route.path === `/profile/${user.id}` }" 
-				@click="_ => navigate(`/profile/${user.id}`)">
+				@click="_ => onClickNav(`/profile/${user.id}`)">
 				<icon class="nav-item-icon" icon="user-alt" />
 				<div class="nav-item-text">Profile</div>
 			</div>
@@ -71,6 +71,10 @@ export default {
 		};
 	},
 	methods: {
+		onClickNav(route){
+			this.navigate(route);
+			this.$emit('click');
+		},
 		onLogout() {
 			network.get('/users/logout', { withCredentials: true })
 				.then(_ => { 

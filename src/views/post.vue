@@ -39,6 +39,7 @@
 				<b-row class="card-row">
 					<b-button
 						variant="outline-primary"
+						:disabled="submitDisabled"
 						@click="onPostPicture">Post</b-button>
 				</b-row>
 			</b-card>
@@ -55,6 +56,7 @@ export default {
 			image: [],
 			imageSrc: null,
 			caption: null,
+			submitDisabled: false
 		};
 	},
 	methods: {
@@ -76,6 +78,8 @@ export default {
 			if(!this.validForm)
 				return this.imageSrc = false;
 			try {
+
+				this.submitDisabled = true;
 				let res = await network.post('/posts/new', {
 					image: await this.imageToBase64(),
 					caption: this.caption
@@ -91,12 +95,13 @@ export default {
 					icon: 'success'
 				}).then(_ => this.navigate(`/post-view/${res.data.postid}`));
 			} catch(err) {
-				console.log(err);
 				this.$swal({
 					title: 'Post Upload Failed',
 					text: err.response && err.response.data.error ? err.response.data.error : 'An error occurred while attempting to upload the picture.',
 					icon: 'error'
 				});
+			} finally {
+				this.submitDisabled = false;
 			}
 		}
 	},

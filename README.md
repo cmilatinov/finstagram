@@ -47,3 +47,7 @@ The Instagram that the people deserve. A picture sharing platform with honest re
 * I want to be able to post a picture with a caption.
 * I want to be able to comment on other users' pictures.
 * I want to be able to follow other users' to mark them as my friends.
+
+### Project Link
+http://192.168.0.109:8081/  
+Please email tengzhao@live.ca or text/call 514-996-2213 if connection timed out.
