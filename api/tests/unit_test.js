@@ -1,4 +1,4 @@
-const axios = require('axios').create({ baseURL: 'http://localhost:3000', withCredentials: true });
+const axios = require('axios').create({ baseURL: 'http://184.160.100.238:3000', withCredentials: true });
 const logger = require('./logger');
 const { SUCCESS, ERROR, WARNING } = logger;
 
@@ -49,7 +49,20 @@ async function execAllTests() {
         { 
             name: 'User Posts Route  -  /users/2/posts', 
             test: _ => axios.get(`/users/2/posts`)
+        },
+        {
+            name: 'Posts Information  -  /posts/76',
+            test: _ => axios.get(`/posts/76`)
+        },
+        {
+            name: 'User Profile  -  /users/2',
+            test: _ => axios.get(`/users/2`)
+        },
+        {
+            name: 'Search  -  /search',
+            test: _ => axios.post(`/search`, {search: 'c'})
         }
+
     ];
 
     let testsPassed = 0;
