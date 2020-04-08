@@ -39,7 +39,7 @@
 							Displaying {{results.length}} results for "{{lastSearch}}"
 						</div>
 						<div class="dropdown-item" :key="result.id" v-for="result in results"
-							@click="_ => { if(showResults) navigate(`/profile/${result.id}`); }">
+							@mousedown="_ => { if(showResults) navigate(`/profile/${result.id}`); }">
 							<div class="overflow-container">
 								{{result.firstname}} {{result.lastname}} (<i>@{{result.username}}</i>)
 							</div>
@@ -248,7 +248,7 @@ export default {
 		bottom: 0;
 		left: 0;
 		right: 0;
-		background-color: #ffc107;
+		background-color: #ff9000;
 		transition: 0.2s;
 	}
 
