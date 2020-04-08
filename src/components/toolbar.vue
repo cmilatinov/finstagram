@@ -29,7 +29,7 @@
 					type="text" 
 					placeholder="Search here" 
 					@focus="_ => showResults = true" 
-					@blur="onBlurSearch"
+					@blur="_ => showResults = false"
 					@keyup.13="onSubmitSearch"/>
 				<div class="dropdown" :class="{ shown: showResults }">
 					<b-spinner style="margin: 1em" variant="secondary" small v-if="searchLoading"/>
@@ -98,9 +98,6 @@ export default {
 				this.results = [];
 				this.searchLoading = false;
 			});
-		},
-		onBlurSearch() {
-			setTimeout(_ => this.showResults = false, 200);
 		}
 	}
 }
