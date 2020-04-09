@@ -23,8 +23,8 @@ db('images').select().then(images => {
                     console.log(url);
                     const writer = fs.createWriteStream(imgPath);
                     res.data.pipe(writer);
-                    writer.on('finish', _ => console.log(image.id))
-                    writer.on('error', _ => console.log(image.id, err))
+                    writer.on('finish', _ => console.log(image.id));
+                    writer.on('error', _ => console.log(image.id, err));
                 });
         else
             console.log(image.id);

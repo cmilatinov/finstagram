@@ -16,4 +16,4 @@ module.exports = {
         for(let prop of props)
             delete obj[prop];
     }
-}
+};

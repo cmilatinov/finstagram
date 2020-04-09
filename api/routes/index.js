@@ -8,7 +8,7 @@ router.get('/', (_, res) => {
         name: 'finstagram-api',
         version: '1.0',
         date: now.toLocaleString()
-    })
+    });
 });
 
 module.exports = router;

@@ -4,13 +4,13 @@ import App from './app.vue';
 import VueSweetalert2 from 'vue-sweetalert2';
 import 'sweetalert2/dist/sweetalert2.min.css';
 
-import { BootstrapVue } from 'bootstrap-vue'
+import { BootstrapVue } from 'bootstrap-vue';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-vue/dist/bootstrap-vue.css';
 
-import { library } from '@fortawesome/fontawesome-svg-core'
-import { fas } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { fas } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
 import 'viewerjs/dist/viewer.css';
 import Viewer from 'v-viewer';
@@ -23,8 +23,8 @@ import global from './mixins/global';
 Vue.config.productionTip = true;
 
 // Font Awesome
-library.add(fas)
-Vue.component('icon', FontAwesomeIcon)
+library.add(fas);
+Vue.component('icon', FontAwesomeIcon);
 
 // Bootstrap-Vue
 Vue.use(BootstrapVue);

@@ -27,7 +27,7 @@ export default new Vuex.Store({
             return state.user;
         },
         reactions(state) {
-            return state.reactions
+            return state.reactions;
         }
     },
 });

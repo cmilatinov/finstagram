@@ -31,6 +31,6 @@ router.post('/', needAuth, async (req,res) => {
     } catch (err){
         sendError(res, err);
     }
-})
+});
 
 module.exports = router;
