@@ -55,7 +55,7 @@ router.post("/delete", needAuth, async (req,res) => {
 		
 		//check if userid of post is same as auth
 		if(req.user.id != post.userid)
-			return res.status(HTTP_BAD_REQUEST).json({ error: 'Does not have authorization.' });
+			return res.status(HTTP_BAD_REQUEST).json({ error: 'User does not have authorization to delete this post.' });
 
 		//remove image
 		await db ('images')

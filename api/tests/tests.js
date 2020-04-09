@@ -1,4 +1,4 @@
-const axios = require('axios').create({ baseURL: 'http://184.160.100.238:3000', withCredentials: true });
+const axios = require('axios').create({ baseURL: 'http://localhost:3000', withCredentials: true });
 const logger = require('./logger');
 const { SUCCESS, ERROR, WARNING } = logger;
 
