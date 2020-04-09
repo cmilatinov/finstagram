@@ -47,7 +47,7 @@ async function execAllTests() {
         {
             name: 'Login Route  -  /users/login',
             test: _ => axios.post(`/users/login`, { username: 'rednite', password: 'power336' }),
-            onSuccess: res => axios.defaults.headers.common['Cookie'] = res.headers['set-cookie'][0].split(';')[0]
+            onSuccess: res => axios.defaults.headers.common.Cookie = res.headers['set-cookie'][0].split(';')[0]
         },
         {
             name: 'User Posts Route  -  /users/2/posts',
@@ -108,7 +108,7 @@ async function execAllTests() {
     }
 
     console.timeEnd(' Running time');
-    console.log(`\n Tests passed: ${(testsPassed + '/' + tests.length).brightCyan.bold} (${((testsPassed * 100 / tests.length).toFixed(2) + '%').brightCyan.bold})`)
+    console.log(`\n Tests passed: ${(testsPassed + '/' + tests.length).brightCyan.bold} (${((testsPassed * 100 / tests.length).toFixed(2) + '%').brightCyan.bold})`);
 }
 
 execAllTests();

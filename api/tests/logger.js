@@ -15,7 +15,7 @@ const TAGS = {
     success: ' SUCCESS: ',
     error: ' ERROR: ',
     warning: ' WARNING: '
-}
+};
 
 const SUCCESS = 'success';
 const ERROR = 'error';
@@ -60,4 +60,4 @@ module.exports = {
         console.log((TAGS[tag] + str)[tag]);
     }
 
-}
+};

@@ -250,7 +250,7 @@ router.get('/:postid', needAuth, async (req, res) => {
     } catch (err) {
         sendError(res, err);
     }
-})
+});
 
 router.post('/react', needAuth, async (req, res) => {
 

@@ -3,4 +3,4 @@ module.exports = (req, res, next) => {
         next();
     else
         res.status(HTTP_UNAUTHORIZED).json({ error: 'Please login to use this feature.' });
-}
+};

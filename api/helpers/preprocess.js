@@ -54,4 +54,4 @@ module.exports =
         console.log('\n');
 
         next();
-    }
+    };
