@@ -35,10 +35,10 @@ router.post('/new', needAuth, async (req, res) => {
 
 });
 
-router.post("/delete", needAuth, async (req,res) => {
+router.post("/delete", needAuth, async (req, res) => {
 
 	if(utils.fieldsEmptyOrNull(req.body, 'postid'))
-	return res.status(HTTP_BAD_REQUEST).json({ error: 'Invalid request body.' });
+	    return res.status(HTTP_BAD_REQUEST).json({ error: 'Invalid request body.' });
 
 	let { postid } = req.body;
 
@@ -75,7 +75,9 @@ router.post("/delete", needAuth, async (req,res) => {
 		//remove postid
 		await db ('posts')
 			.where('id', post.id)
-			.del();
+            .del();
+            
+        res.json({ msg: 'Success' });
 
 	} catch(err) {
 		sendError (res, err);
