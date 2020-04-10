@@ -10,7 +10,7 @@ router.get('/:id', (req, res) => {
     try {
 
         let imgPath = path.join(__dirname, `../${IMAGE_DIR}/${req.params.id}.jpg`);
-        if(fs.existsSync(imgPath))
+        if (fs.existsSync(imgPath))
             return res.sendFile(imgPath);
 
         res.status(HTTP_NOT_FOUND).json({ error: 'No such image.' });

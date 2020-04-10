@@ -19,9 +19,9 @@ fs.createReadStream('./scripts/quotes.csv')
             r.name = r.name.substring(2);
             r.firstname = r.name.split(/\s+/)[0];
             r.lastname = r.name.substring(r.firstname.length).trim() || 'A';
-            r.username = 
-                (`${r.firstname.toLowerCase().replace(/[^a-z ]/g, '')}_`+ 
-                r.lastname.toLowerCase().replace(/[^a-z ]/g, '')).replace(/ /g, '_');
+            r.username =
+                (`${r.firstname.toLowerCase().replace(/[^a-z ]/g, '')}_` +
+                    r.lastname.toLowerCase().replace(/[^a-z ]/g, '')).replace(/ /g, '_');
             r.email = `${r.username}@gmail.com`;
             r.password = bcrypt.hashSync(r.username, 10);
 
@@ -30,14 +30,14 @@ fs.createReadStream('./scripts/quotes.csv')
             delete r.name;
 
             try {
-                
+
                 let user = await db('users').select().where('username', r.username).first();
-                
+
                 let [imageid] = await db('images').insert({ caption });
                 let [postid] = await db('posts').insert({ userid: user.id, imageid, posted: new Date(new Date().getTime() - Math.floor(Math.random() * 4.234e+9)) });
 
                 console.log(user.id, postid, user.username);
-            } catch(err) {
+            } catch (err) {
                 console.log(r.username, err);
             }
         });

@@ -16,10 +16,10 @@ db('images').select().then(images => {
 
         let imgPath = path.join(__dirname, `../${IMAGE_DIR}/${image.id}.jpg`);
         let url = `https://picsum.photos/${Math.floor(Math.random() * 1500 + 800)}/${Math.floor(Math.random() * 1500 + 800)}`;
-        
-        if(!fs.existsSync(imgPath))
+
+        if (!fs.existsSync(imgPath))
             axios.get(url, { responseType: 'stream' })
-                .then(res => { 
+                .then(res => {
                     console.log(url);
                     const writer = fs.createWriteStream(imgPath);
                     res.data.pipe(writer);

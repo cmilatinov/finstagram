@@ -23,7 +23,7 @@ export default {
 		this.refresh();
 	},
 	methods: {
-		refresh(){
+		refresh() {
 			network.get('/posts/newest', { withCredentials: true })
 				.then(res => this.posts = res.data.posts);
 		}

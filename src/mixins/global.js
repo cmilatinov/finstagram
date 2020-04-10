@@ -2,7 +2,7 @@ export default {
 
     methods: {
         navigate(path) {
-            if(this.$route.path !== path)
+            if (this.$route.path !== path)
                 this.$router.push(path);
         }
     },

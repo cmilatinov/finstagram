@@ -103,25 +103,28 @@ export default {
 			this.refreshUser();
 		},
 		refreshUser(showLoading = true) {
-			if(showLoading) this.loading = true;
+			if (showLoading) 
+				this.loading = true;
+
 			network.get(`/users/${this.$route.params.userid}`, { withCredentials: true })
 				.then(res => { 
 					this.profileduser = res.data;
 					this.editedFirstname = this.profileduser.firstname;
 					this.editedLastname = this.profileduser.lastname;
 					network.get(`/users/${this.$route.params.userid}/posts`, { withCredentials: true })
-						.then(res => { 
-							this.posts = res.data.posts;
-							if(showLoading) this.loading = false;
-						})
-						.catch(_ => { 
-							if(showLoading) this.loading = false;
-						});
+					.then(res => { 
+						this.posts = res.data.posts;
+						if (showLoading) this.loading = false;
+					})
+					.catch(_ => { 
+						if (showLoading) this.loading = false;
+					});
 				})
 				.catch(_ => this.loading = false);
 		},
 		onFollowClick() {
-			if(this.loadingFollow) return;
+			if (this.loadingFollow) 
+				return;
 
 			this.loadingFollow = true;
 			network.post('/users/follow', {
@@ -142,25 +145,23 @@ export default {
 				});
 		},
 		onUnfollowClick() {
-			if(this.loadingFollow) return;
+			if (this.loadingFollow) 
+				return;
 
 			this.loadingFollow = true;
-			network.post('/users/unfollow', {
-					userid: this.user.id,
-					followerid: this.profileduser.id
-				},{ withCredentials: true })
-				.then(_ => { 
-					this.refreshUser(false);
-					this.loadingFollow = false;
-				})
-				.catch(err => { 
-					this.$swal({
-						title: 'Unfollow Failed',
-						text: err.response && err.response.data ? err.response.data.error : 'Could not unfollow user.',
-						icon: 'error'
-					});
-					this.loadingFollow = false;
+			network.post('/users/unfollow', { userid: this.user.id, followerid: this.profileduser.id }, { withCredentials: true })
+			.then(_ => { 
+				this.refreshUser(false);
+				this.loadingFollow = false;
+			})
+			.catch(err => { 
+				this.$swal({
+					title: 'Unfollow Failed',
+					text: err.response && err.response.data ? err.response.data.error : 'Could not unfollow user.',
+					icon: 'error'
 				});
+				this.loadingFollow = false;
+			});
 		},
 		onSumbitProfileEdit() {
 			this.editLoading = true;
@@ -190,7 +191,7 @@ export default {
 	},
 	watch: {
         '$route.params.userid': function (id) {
-			if(!id)
+			if (!id)
 				return;
 			this.refreshUser();
 		},

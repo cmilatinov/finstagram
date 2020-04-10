@@ -10,7 +10,7 @@ colors.setTheme({
 });
 
 // Print requests to console
-module.exports = 
+module.exports =
     (req, _, next) => {
         console.log('-----------------------------------------------------------------------------');
         console.log(`| SOURCE: ${getIP(req).clientIp}`);
@@ -18,20 +18,20 @@ module.exports =
         console.log('-----------------------------------------------------------------------------');
 
         let body = '';
-        if(Object.entries(req.body).length === 0)
+        if (Object.entries(req.body).length === 0)
             body = 'Empty';
         else {
             body += '{\n';
-            for(let key in req.body){
+            for (let key in req.body) {
                 let type = Array.isArray(req.body[key]) ? 'array' : typeof req.body[key];
                 body += `|\t${key}: `;
 
-                if(req.body[key] === null || req.body[key] === undefined) {
+                if (req.body[key] === null || req.body[key] === undefined) {
                     body += colors.grey(`${req.body[key]}\n`);
                     continue;
                 }
-                
-                switch(type) {
+
+                switch (type) {
                     case 'array':
                         body += colors[type](`[${type}] (${req.body[key].length})\n`);
                         break;
@@ -39,7 +39,7 @@ module.exports =
                         body += colors[type](`[${type}] { ${Object.keys(req.body[key]).join(', ')} }\n`);
                         break;
                     default:
-                        if(req.body[key].length > 50)
+                        if (req.body[key].length > 50)
                             body += colors[type](`[${type}] (${req.body[key].length})\n`);
                         else
                             body += colors[type](`${req.body[key]}\n`);

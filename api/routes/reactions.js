@@ -8,12 +8,12 @@ router.get('/all', async (_, res) => {
     try {
 
         let reactions = await db('reactions').select().orderBy('order');
-        
+
         res.json({
             reactions
         });
 
-    }catch(err) {
+    } catch (err) {
         sendError(res, err);
     }
 });

@@ -62,7 +62,7 @@ export default {
 	}, 
 	computed: {
 		timePosted() {
-            if(!this.post)
+            if (!this.post)
                 return '';
             return utils.dateDiffFromNow(this.post.posted);
         },
@@ -70,13 +70,13 @@ export default {
 	methods: {
 		getReactionRow(index) {
             let arr = [];
-			for(let i = this.reactions.length * index / this.reactionRows; 
+			for (let i = this.reactions.length * index / this.reactionRows; 
 				i < this.reactions.length * (index + 1) / this.reactionRows; i++)
                 arr.push(this.reactions[i]);
             return arr;
 		},
 		onReactToPost(reactionid) {
-			if(this.post.reacted === reactionid)
+			if (this.post.reacted === reactionid)
 				return;
 
 			network.post('/posts/react', {
@@ -89,7 +89,7 @@ export default {
 			});
 		},
 		onClickFullscreen() {
-            if(this.$refs.image)
+            if (this.$refs.image)
                 this.$refs.image.$viewer.show();
         },
 	}

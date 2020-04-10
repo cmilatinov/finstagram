@@ -71,7 +71,7 @@ export default {
 		};
 	},
 	methods: {
-		onClickNav(route){
+		onClickNav(route) {
 			this.navigate(route);
 			this.$emit('click');
 		},
@@ -84,7 +84,7 @@ export default {
 				.catch();
 		},
 		onSubmitSearch() {
-			if(this.search === '') return;
+			if (this.search === '') return;
 
 			this.searchLoading = true;
 			this.lastSearch = this.search;

@@ -3,10 +3,10 @@ const dotenv = require('dotenv');
 
 module.exports = {
 
-    init() {    
-        if(process.env.SERVER_ENV)
+    init() {
+        if (process.env.SERVER_ENV)
             dotenv.config();
-        else if(process.env.DEV_ENV) {
+        else if (process.env.DEV_ENV) {
             let env = dotenv.parse(fs.readFileSync('./.env.dev'));
             Object.keys(env).forEach(key => process.env[key] = env[key]);
         } else {
@@ -14,5 +14,5 @@ module.exports = {
             Object.keys(env).forEach(key => process.env[key] = env[key]);
         }
     }
-    
+
 };

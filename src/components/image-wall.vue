@@ -26,7 +26,7 @@ export default {
     methods: {
         getPostCol(offset, multiple) {
             let arr = [];
-            for(let i = offset; i < this.posts.length; i += multiple)
+            for (let i = offset; i < this.posts.length; i += multiple)
                 arr.push(this.posts[i]);
             return arr;
         }

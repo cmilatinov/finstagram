@@ -75,12 +75,12 @@ export default {
 
     computed: {
         validUsername() {
-            if(this.username === null)
+            if (this.username === null)
                 return null;
             return this.username.length > 0;
         },
         validPassword() {
-            if(this.password === null)
+            if (this.password === null)
                 return null;
             return this.password.length > 0 && this.password.length <= 50;
         },

@@ -23,10 +23,10 @@ router.post('/register', async (req, res) => {
 
 		// Check if username or email exists
 		let existingUser = await db('users')
-		.select()
-		.where('username', username)
-		.orWhere('email', email)
-		.first();
+			.select()
+			.where('username', username)
+			.orWhere('email', email)
+			.first();
 		if (existingUser)
 			return res.status(HTTP_FORBIDDEN).json({
 				error: `${existingUser.email === email ? 'Email' : 'Username'} is already in use.`
@@ -35,7 +35,7 @@ router.post('/register', async (req, res) => {
 		// Field validation
 		let nameRegex = /^[A-Za-z]+$/;
 		let usernameRegex = /^[A-Za-z0-9_-]+$/;
-		
+
 		if (!usernameRegex.test(username) ||
 			!utils.validateEmail(email) ||
 			!nameRegex.test(firstname) ||
@@ -85,14 +85,14 @@ router.post('/follow', needAuth, async (req, res) => {
 		return res.status(HTTP_BAD_REQUEST).json({ error: 'Invalid request body.' });
 
 	try {
-		if(req.body.followerid === req.user.id)
+		if (req.body.followerid === req.user.id)
 			return res.status(HTTP_BAD_REQUEST).json({ error: 'User cannot follow himself.' });
 
 		let following = await db('followers')
-		.select()
-		.where('userid', req.user.id)
-		.andWhere('followerid', req.body.followerid)
-		.first();
+			.select()
+			.where('userid', req.user.id)
+			.andWhere('followerid', req.body.followerid)
+			.first();
 		if (following)
 			return res.status(HTTP_BAD_REQUEST).json({ error: 'Already following this user.' });
 
@@ -113,9 +113,9 @@ router.post('/unfollow', needAuth, async (req, res) => {
 
 	try {
 		await db('followers')
-		.where('userid', req.user.id)
-		.andWhere('followerid', req.body.followerid)
-		.del();
+			.where('userid', req.user.id)
+			.andWhere('followerid', req.body.followerid)
+			.del();
 
 		res.json({ msg: 'Success' });
 	} catch (err) {
@@ -128,7 +128,7 @@ router.post('/edit', needAuth, async (req, res) => {
 		return res.status(HTTP_BAD_REQUEST).json({ error: 'Invalid request body.' });
 
 	const keys = ['firstname', 'lastname', 'username'];
-	
+
 
 	try {
 		// Check if username already exists
@@ -148,25 +148,25 @@ router.post('/edit', needAuth, async (req, res) => {
 		// Validation
 		const nameRegex = /^[A-Za-z]+$/;
 		const usernameRegex = /^[A-Za-z0-9_-]+$/;
-		if(updateObj.username && !usernameRegex.test(updateObj.username))
+		if (updateObj.username && !usernameRegex.test(updateObj.username))
 			return res.status(HTTP_BAD_REQUEST).json({ error: 'Invalid username.' });
 
-		if(updateObj.firstname && !nameRegex.test(updateObj.firstname))
+		if (updateObj.firstname && !nameRegex.test(updateObj.firstname))
 			return res.status(HTTP_BAD_REQUEST).json({ error: 'Invalid first name.' });
 
-		if(updateObj.lastname && !nameRegex.test(updateObj.lastname))
+		if (updateObj.lastname && !nameRegex.test(updateObj.lastname))
 			return res.status(HTTP_BAD_REQUEST).json({ error: 'Invalid last name.' });
-		
+
 		// Insert
 		await db('users')
-		.where('id', req.user.id)
-		.update(updateObj);
+			.where('id', req.user.id)
+			.update(updateObj);
 
 		// Return user
 		let user = await db('users').select().where('id', req.user.id).first();
 		delete user.password;
 		res.json({ user });
-		
+
 	} catch (err) {
 		sendError(res, err);
 	}
@@ -175,33 +175,33 @@ router.post('/edit', needAuth, async (req, res) => {
 router.get('/:id', needAuth, async (req, res) => {
 	try {
 		let user = await db('users')
-		.select('id', 'firstname', 'lastname', 'username')
-		.where('id', req.params.id)
-		.first();
+			.select('id', 'firstname', 'lastname', 'username')
+			.where('id', req.params.id)
+			.first();
 
-		if(!user)
+		if (!user)
 			return res.status(HTTP_BAD_REQUEST).json({ error: 'No such user.' });
 
 		let nbPosts = await db('posts')
-		.where('userid', user.id)
-		.count()
-		.first();
+			.where('userid', user.id)
+			.count()
+			.first();
 
 		let nbFollowings = await db('followers')
-		.where('userid', user.id)
-		.count()
-		.first();
+			.where('userid', user.id)
+			.count()
+			.first();
 
 		let nbFollowers = await db('followers')
-		.where('followerid', user.id)
-		.count()
-		.first();
+			.where('followerid', user.id)
+			.count()
+			.first();
 
 		let followed = await db('followers')
-		.select()
-		.where('userid', req.user.id)
-		.andWhere('followerid', req.params.id)
-		.first();
+			.select()
+			.where('userid', req.user.id)
+			.andWhere('followerid', req.params.id)
+			.first();
 
 		res.json({
 			...user,
@@ -217,69 +217,69 @@ router.get('/:id', needAuth, async (req, res) => {
 });
 
 router.get('/:id/posts', needAuth, async (req, res) => {
-    try{
+	try {
 		let postsQuery = db
-		.select(
-			'p.*', 
-			'u.firstname', 
-			'u.lastname', 
-			'u.username', 
-			'i.caption',
-			'reacted.reactionid AS reacted',
-			db.raw(`CONCAT('{', IFNULL(GROUP_CONCAT(counts.reaction), ''), '}') AS reactions`)
-		)
-		.from('posts AS p')
-		.leftJoin('users AS u', 'p.userid', 'u.id')
-		.leftJoin('images AS i', 'p.imageid', 'i.id')
-		.leftJoin(
-            db('posts_reactions')
-            .select('postid', db.raw(`CONCAT('"', reactionid, '":', count(reactionid)) AS reaction`))
-            .groupBy('postid', 'reactionid')
-            .as('counts'),
-            function(){ this.on('counts.postid', 'p.id'); })
-		.leftJoin(
-            db('posts_reactions')
-            .select('postid', 'reactionid')
-            .where('userid', req.user.id)
-            .as('reacted'),
-			function(){ this.on('reacted.postid', 'p.id'); })
-		.groupBy('p.id')
-        .orderBy('id', 'desc')
-		.where('userid', req.params.id);
-		
+			.select(
+				'p.*',
+				'u.firstname',
+				'u.lastname',
+				'u.username',
+				'i.caption',
+				'reacted.reactionid AS reacted',
+				db.raw(`CONCAT('{', IFNULL(GROUP_CONCAT(counts.reaction), ''), '}') AS reactions`)
+			)
+			.from('posts AS p')
+			.leftJoin('users AS u', 'p.userid', 'u.id')
+			.leftJoin('images AS i', 'p.imageid', 'i.id')
+			.leftJoin(
+				db('posts_reactions')
+					.select('postid', db.raw(`CONCAT('"', reactionid, '":', count(reactionid)) AS reaction`))
+					.groupBy('postid', 'reactionid')
+					.as('counts'),
+				function () { this.on('counts.postid', 'p.id'); })
+			.leftJoin(
+				db('posts_reactions')
+					.select('postid', 'reactionid')
+					.where('userid', req.user.id)
+					.as('reacted'),
+				function () { this.on('reacted.postid', 'p.id'); })
+			.groupBy('p.id')
+			.orderBy('id', 'desc')
+			.where('userid', req.params.id);
+
 		let posts = await postsQuery;
 
-		if(posts.length === 1 && posts[0].id === null)
+		if (posts.length === 1 && posts[0].id === null)
 			return res.json({ posts: [] });
 
-        posts.forEach(post => {
-            let user = {
-                id: post.userid,
-                username: post.username,
-                firstname: post.firstname,
-                lastname: post.lastname
-            };
-            let image = {
-                id: post.imageid,
-                caption: post.caption
-            };
-            post.user = user;
+		posts.forEach(post => {
+			let user = {
+				id: post.userid,
+				username: post.username,
+				firstname: post.firstname,
+				lastname: post.lastname
+			};
+			let image = {
+				id: post.imageid,
+				caption: post.caption
+			};
+			post.user = user;
 			post.image = image;
 			post.reactions = JSON.parse(post.reactions);
-            delete post.userid;
-            delete post.username;
-            delete post.firstname;
-            delete post.lastname;
-            delete post.imageid;
-            delete post.caption;
-        });
+			delete post.userid;
+			delete post.username;
+			delete post.firstname;
+			delete post.lastname;
+			delete post.imageid;
+			delete post.caption;
+		});
 
-        res.json({
-            posts
-        });
-    } catch(err) {
-        sendError(res, err);
-    }
+		res.json({
+			posts
+		});
+	} catch (err) {
+		sendError(res, err);
+	}
 });
 
 module.exports = router;

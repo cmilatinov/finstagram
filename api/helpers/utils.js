@@ -1,10 +1,10 @@
-module.exports = { 
+module.exports = {
     isNullOrUndefined(obj) {
         return obj === undefined || obj === null || obj === '';
     },
     fieldsEmptyOrNull(obj, ...fields) {
-        for(let field of fields)
-            if(obj[field] === null || obj[field] == undefined || obj[field] === '')
+        for (let field of fields)
+            if (obj[field] === null || obj[field] == undefined || obj[field] === '')
                 return true;
         return false;
     },
@@ -13,7 +13,7 @@ module.exports = {
         return re.test(String(email).toLowerCase());
     },
     deleteProperties(obj, ...props) {
-        for(let prop of props)
+        for (let prop of props)
             delete obj[prop];
     }
 };

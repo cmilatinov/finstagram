@@ -10,22 +10,22 @@ const sendError = require('../helpers/sendError');
 
 router.post('/new', needAuth, async (req, res) => {
 
-    if(utils.fieldsEmptyOrNull(req.body, 'image'))
+    if (utils.fieldsEmptyOrNull(req.body, 'image'))
         return res.status(HTTP_BAD_REQUEST).json({ error: 'Invalid request body.' });
 
     let { caption } = req.body;
 
     try {
-        
+
         let [imageid] = await db('images').insert({ caption: caption || '' });
         let [postid] = await db('posts').insert({ userid: req.user.id, imageid });
 
-        if(!fs.existsSync(`${IMAGE_DIR}/`))
+        if (!fs.existsSync(`${IMAGE_DIR}/`))
             fs.mkdirSync(`${IMAGE_DIR}/`);
 
         await sharp(Buffer.from(req.body.image.split(',').pop(), 'base64'))
-        .jpeg({ quality: 100 })
-        .toFile(`${IMAGE_DIR}/${imageid}.jpg`);
+            .jpeg({ quality: 100 })
+            .toFile(`${IMAGE_DIR}/${imageid}.jpg`);
 
         res.json({ postid });
 
@@ -37,85 +37,85 @@ router.post('/new', needAuth, async (req, res) => {
 
 router.post("/delete", needAuth, async (req, res) => {
 
-	if(utils.fieldsEmptyOrNull(req.body, 'postid'))
-	    return res.status(HTTP_BAD_REQUEST).json({ error: 'Invalid request body.' });
+    if (utils.fieldsEmptyOrNull(req.body, 'postid'))
+        return res.status(HTTP_BAD_REQUEST).json({ error: 'Invalid request body.' });
 
-	let { postid } = req.body;
+    let { postid } = req.body;
 
-	try{
-		// Select post by id
-		let post = await db('posts')
-		.select()
-		.where('id', postid)
-		.first();
+    try {
+        // Select post by id
+        let post = await db('posts')
+            .select()
+            .where('id', postid)
+            .first();
 
-		// Check if post exists
-		if (!post)
-			return res.status(HTTP_BAD_REQUEST).json({ error: 'Post does not exist.' });
-		
-		//check if userid of post is same as auth
-		if(req.user.id != post.userid)
-			return res.status(HTTP_BAD_REQUEST).json({ error: 'User does not have authorization to delete this post.' });
+        // Check if post exists
+        if (!post)
+            return res.status(HTTP_BAD_REQUEST).json({ error: 'Post does not exist.' });
 
-		//remove image
-		await db ('images')
-			.where('id', post.imageid)
-			.del();
+        //check if userid of post is same as auth
+        if (req.user.id != post.userid)
+            return res.status(HTTP_BAD_REQUEST).json({ error: 'User does not have authorization to delete this post.' });
 
-		//remove comment
-		await db ('comments')
-			.where('postid', post.id)
-			.del();
-
-		//remove reactions
-		await db ('posts_reactions')
-			.where('postid', post.id)
-			.del();
-
-		//remove postid
-		await db ('posts')
-			.where('id', post.id)
+        //remove image
+        await db('images')
+            .where('id', post.imageid)
             .del();
-            
+
+        //remove comment
+        await db('comments')
+            .where('postid', post.id)
+            .del();
+
+        //remove reactions
+        await db('posts_reactions')
+            .where('postid', post.id)
+            .del();
+
+        //remove postid
+        await db('posts')
+            .where('id', post.id)
+            .del();
+
         res.json({ msg: 'Success' });
 
-	} catch(err) {
-		sendError (res, err);
-	}
+    } catch (err) {
+        sendError(res, err);
+    }
 
 });
 
 router.get('/newest', needAuth, async (req, res) => {
-    try{
+    try {
 
         let posts = await db
-        .select(
-            'p.*', 
-            'u.firstname', 
-            'u.lastname', 
-            'u.username', 
-            'i.caption',
-            'reacted.reactionid AS reacted',
-            db.raw(`CONCAT('{', IFNULL(GROUP_CONCAT(counts.reaction), ''), '}') AS reactions`)
-        )
-        .from('posts AS p')
-        .innerJoin('users AS u', 'u.id', 'p.userid')
-        .innerJoin('images AS i', 'i.id', 'p.imageid')
-        .leftJoin(
-            db('posts_reactions')
-            .select('postid', 'reactionid')
-            .where('userid', req.user.id)
-            .as('reacted'),
-            function(){ this.on('reacted.postid', 'p.id'); })
-        .leftJoin(
-            db('posts_reactions')
-            .select('postid', db.raw(`CONCAT('"', reactionid, '":', count(reactionid)) AS reaction`))
-            .groupBy('postid', 'reactionid')
-            .as('counts'),
-            function(){ this.on('counts.postid', 'p.id'); })
-        .groupBy('p.id')
-        .orderBy('posted', 'desc')
-        .limit(40);
+            .select(
+                'p.*',
+                'u.firstname',
+                'u.lastname',
+                'u.username',
+                'i.caption',
+                'reacted.reactionid AS reacted',
+                db.raw(`CONCAT('{', IFNULL(GROUP_CONCAT(counts.reaction), ''), '}') AS reactions`)
+            )
+            .from('posts AS p')
+            .innerJoin('users AS u', 'u.id', 'p.userid')
+            .innerJoin('images AS i', 'i.id', 'p.imageid')
+            .leftJoin(
+                db('posts_reactions')
+                    .select('postid', 'reactionid')
+                    .where('userid', req.user.id)
+                    .as('reacted'),
+                function () { this.on('reacted.postid', 'p.id'); })
+            .leftJoin(
+                db('posts_reactions')
+                    .select('postid', db.raw(`CONCAT('"', reactionid, '":', count(reactionid)) AS reaction`))
+                    .groupBy('postid', 'reactionid')
+                    .as('counts'),
+                function () { this.on('counts.postid', 'p.id'); })
+            .groupBy('p.id')
+            .orderBy('posted', 'desc')
+            .limit(40);
 
         posts.forEach(post => {
             let user = {
@@ -137,14 +137,14 @@ router.get('/newest', needAuth, async (req, res) => {
         res.json({
             posts
         });
-        
-    } catch(err) {
+
+    } catch (err) {
         sendError(res, err);
     }
 });
 
 router.get('/:postid', needAuth, async (req, res) => {
-    try{
+    try {
 
         /*
             SELECT 
@@ -176,46 +176,46 @@ router.get('/:postid', needAuth, async (req, res) => {
             group by p.id limit 1
         */
         let result = await db
-        .select(
-            'p.id',
-            'p.posted',
-            'u.id AS userid',
-            'u.username',
-            'u.firstname',
-            'u.lastname',
-            'i.id AS imageid',
-            'i.caption',
-            'i.tags',
-            'reacted.reactionid AS reacted',
-            db.raw(`CONCAT('{', IFNULL(GROUP_CONCAT(counts.reaction), ''), '}') AS reactions`))
-        .from('posts AS p')
-        .innerJoin('users AS u', 'u.id', 'p.userid')
-        .innerJoin('images AS i', 'i.id', 'p.imageid')
-        .leftJoin(
-            db('posts_reactions')
-            .select('postid', 'reactionid')
-            .where('userid', req.user.id)
-            .as('reacted'),
-            function(){ this.on('reacted.postid', 'p.id'); }
-        )
-        .leftJoin(
-            db('posts_reactions')
-            .select('postid', db.raw(`CONCAT('"', reactionid, '":', count(reactionid)) AS reaction`))
-            .groupBy('postid', 'reactionid')
-            .as('counts'),
-            function(){ this.on('counts.postid', 'p.id'); })
-        .where('p.id', req.params.postid)
-        .groupBy('p.id')
-        .first();
+            .select(
+                'p.id',
+                'p.posted',
+                'u.id AS userid',
+                'u.username',
+                'u.firstname',
+                'u.lastname',
+                'i.id AS imageid',
+                'i.caption',
+                'i.tags',
+                'reacted.reactionid AS reacted',
+                db.raw(`CONCAT('{', IFNULL(GROUP_CONCAT(counts.reaction), ''), '}') AS reactions`))
+            .from('posts AS p')
+            .innerJoin('users AS u', 'u.id', 'p.userid')
+            .innerJoin('images AS i', 'i.id', 'p.imageid')
+            .leftJoin(
+                db('posts_reactions')
+                    .select('postid', 'reactionid')
+                    .where('userid', req.user.id)
+                    .as('reacted'),
+                function () { this.on('reacted.postid', 'p.id'); }
+            )
+            .leftJoin(
+                db('posts_reactions')
+                    .select('postid', db.raw(`CONCAT('"', reactionid, '":', count(reactionid)) AS reaction`))
+                    .groupBy('postid', 'reactionid')
+                    .as('counts'),
+                function () { this.on('counts.postid', 'p.id'); })
+            .where('p.id', req.params.postid)
+            .groupBy('p.id')
+            .first();
 
-        if(!result)
+        if (!result)
             return res.status(HTTP_BAD_REQUEST).json({ error: 'No such post.' });
 
         let comments = await db('comments')
-        .select('comments.id', 'comments.comment', 'comments.commented', 'users.id AS userid', 'users.username')
-        .innerJoin('users', 'users.id', 'comments.userid')
-        .where('comments.postid', result.id)
-        .orderBy('comments.id', 'asc');
+            .select('comments.id', 'comments.comment', 'comments.commented', 'users.id AS userid', 'users.username')
+            .innerJoin('users', 'users.id', 'comments.userid')
+            .where('comments.postid', result.id)
+            .orderBy('comments.id', 'asc');
 
         result.user = {
             id: result.userid,
@@ -230,13 +230,13 @@ router.get('/:postid', needAuth, async (req, res) => {
             tags: JSON.parse(result.tags)
         };
 
-        utils.deleteProperties(result, 
-            'userid', 
-            'firstname', 
-            'lastname', 
-            'username', 
-            'imageid', 
-            'caption', 
+        utils.deleteProperties(result,
+            'userid',
+            'firstname',
+            'lastname',
+            'username',
+            'imageid',
+            'caption',
             'tags',
             'width',
             'height'
@@ -244,7 +244,7 @@ router.get('/:postid', needAuth, async (req, res) => {
 
         result.comments = comments;
         result.reactions = JSON.parse(result.reactions);
-            
+
         res.json(result);
 
     } catch (err) {
@@ -254,52 +254,52 @@ router.get('/:postid', needAuth, async (req, res) => {
 
 router.post('/react', needAuth, async (req, res) => {
 
-    if(utils.fieldsEmptyOrNull(req.body, 'postid'))
+    if (utils.fieldsEmptyOrNull(req.body, 'postid'))
         return res.status(HTTP_BAD_REQUEST).json({ error: 'Invalid request body.' });
 
     let { postid, reactionid } = req.body;
 
-    try{
+    try {
 
         // Select post by id
         let post = await db('posts')
             .select()
             .where('id', postid)
             .first();
-        
+
         // Check if post exists
         if (!post)
             return res.status(HTTP_BAD_REQUEST).json({ error: 'Post does not exist.' });
-        
+
         // Insert reaction
-        if(reactionid) {
+        if (reactionid) {
             await db('posts_reactions')
                 .where('userid', req.user.id)
                 .andWhere('postid', postid)
                 .del();
             await db('posts_reactions')
                 .insert({ userid: req.user.id, postid, reactionid });
-        } else 
+        } else
             await db('posts_reactions')
-            .where('userid', req.user.id)
-            .andWhere('postid', postid)
-            .del();
-        
+                .where('userid', req.user.id)
+                .andWhere('postid', postid)
+                .del();
+
         // Return new reaction counts
         let postReactions = await db
-        .select(
-            'p.id',
-            db.raw(`CONCAT('{', IFNULL(GROUP_CONCAT(counts.reaction), ''), '}') AS reactions`))
-        .from('posts AS p')
-        .leftJoin(
-            db('posts_reactions')
-            .select('postid', db.raw(`CONCAT('"', reactionid, '":', count(reactionid)) AS reaction`))
-            .groupBy('postid', 'reactionid')
-            .as('counts'),
-            function(){ this.on('counts.postid', 'p.id'); })
-        .where('p.id', postid)
-        .groupBy('p.id')
-        .first();
+            .select(
+                'p.id',
+                db.raw(`CONCAT('{', IFNULL(GROUP_CONCAT(counts.reaction), ''), '}') AS reactions`))
+            .from('posts AS p')
+            .leftJoin(
+                db('posts_reactions')
+                    .select('postid', db.raw(`CONCAT('"', reactionid, '":', count(reactionid)) AS reaction`))
+                    .groupBy('postid', 'reactionid')
+                    .as('counts'),
+                function () { this.on('counts.postid', 'p.id'); })
+            .where('p.id', postid)
+            .groupBy('p.id')
+            .first();
 
         res.json({ reactions: JSON.parse(postReactions.reactions) });
 

@@ -69,14 +69,15 @@ export default {
 			});
 		},
 		onFileChange(event) {
-			if(event.target.files.length > 0)
+			if (event.target.files.length > 0)
 				this.imageSrc = URL.createObjectURL(event.target.files[0]);
 			else 
 				this.imageSrc = null;
 		},
-		async onPostPicture(){
-			if(!this.validForm)
+		async onPostPicture() {
+			if (!this.validForm)
 				return this.imageSrc = false;
+				
 			try {
 
 				this.submitDisabled = true;
@@ -94,7 +95,7 @@ export default {
 					text: 'You will now be redirected to your new post.',
 					icon: 'success'
 				}).then(_ => this.navigate(`/post-view/${res.data.postid}`));
-			} catch(err) {
+			} catch (err) {
 				this.$swal({
 					title: 'Post Upload Failed',
 					text: err.response && err.response.data.error ? err.response.data.error : 'An error occurred while attempting to upload the picture.',
@@ -107,7 +108,7 @@ export default {
 	},
 	computed: {
 		validFile() {
-			if(this.imageSrc === null)
+			if (this.imageSrc === null)
 				return null;
 			return !!this.imageSrc;
 		},

@@ -2,7 +2,7 @@ import axios from 'axios';
 
 export class Network {
 
-    constructor(){
+    constructor() {
         this.axios = axios.create();
         this.axios.interceptors.request.use(config => {
             config.url = `${process.env.VUE_APP_API_URL}${config.url}`;
@@ -10,11 +10,11 @@ export class Network {
         });
     }
 
-    async get(url, config = {}){
+    async get(url, config = {}) {
         return this.axios.get(url, config);
     }
 
-    async post(url, body = {}, params = {}){
+    async post(url, body = {}, params = {}) {
         return this.axios.post(url, body, params);
     }
 

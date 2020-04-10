@@ -29,8 +29,8 @@ app.use(cors({
     origin: process.env.APP_URL
 }));
 app.use(cookieParser());
-app.use(bodyParser.urlencoded({extended: false}));
-app.use(bodyParser.json({limit: '50mb'}));
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json({ limit: '50mb' }));
 app.use(session({
     key: 'session',
     secret: 'session_secret',

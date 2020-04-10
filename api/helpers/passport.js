@@ -10,18 +10,18 @@ passport.use(new LocalStrategy({
     passwordField: 'password'
 }, async (username, pass, done) => {
     try {
-        
+
         // Find user
         let user = await db('users').select().where('username', username).orWhere('email', username).first();
 
         // No such user, send error
-        if(!user)
+        if (!user)
             return done(new Error('No such user.'));
-        
+
         // Passwords match, authenticate
-        if(bcrypt.compareSync(pass, user.password))
+        if (bcrypt.compareSync(pass, user.password))
             return done(null, user);
-        
+
         // Passwords did not match, send error
         return done(new Error('Invalid credentials.'));
 
@@ -40,7 +40,7 @@ passport.serializeUser((user, done) => {
 // Deserializing a user
 passport.deserializeUser(async (id, done) => {
     try {
-        
+
         // Find user through ID
         let user = await db('users').select().where('id', id).first();
 

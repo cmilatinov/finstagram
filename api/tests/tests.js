@@ -81,7 +81,7 @@ async function execAllTests() {
         {
             name: 'Comment on Post - /comments/new',
             test: _ => axios.post(`/comments/new`, { postid, comment: 'This is a comment.' })
-        }, 
+        },
         {
             name: 'React to Post  -  /posts/react',
             test: _ => axios.post(`/posts/react`, { postid, reactionid: 'like' }),
@@ -90,7 +90,7 @@ async function execAllTests() {
             name: 'Delete Post  -  /posts/delete',
             test: _ => axios.post(`/posts/delete`, { postid }),
         },
-        
+
     ];
 
     let testsPassed = 0;

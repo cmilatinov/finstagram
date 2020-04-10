@@ -28,16 +28,16 @@ module.exports = {
 
     logObject(obj) {
         let body = '   {\n';
-        for(let key in obj){
+        for (let key in obj) {
             let type = Array.isArray(obj[key]) ? 'array' : typeof obj[key];
             body += `\t${key}: `;
-    
-            if(obj[key] === null || obj[key] === undefined) {
+
+            if (obj[key] === null || obj[key] === undefined) {
                 body += colors.grey(`${obj[key]}\n`);
                 continue;
             }
-            
-            switch(type) {
+
+            switch (type) {
                 case 'array':
                     body += colors[type](`[${type}] (${obj[key].length})\n`);
                     break;
@@ -45,7 +45,7 @@ module.exports = {
                     body += colors[type](`[${type}] { ${Object.keys(obj[key]).join(', ')} }\n`);
                     break;
                 default:
-                    if(obj[key].length > 50)
+                    if (obj[key].length > 50)
                         body += colors[type](`[${type}] (${obj[key].length})\n`);
                     else
                         body += colors[type](`${obj[key]}\n`);

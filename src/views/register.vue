@@ -90,7 +90,7 @@ export default {
 
     methods: {
         async onSubmitRegister() {
-            if(!this.validForm)
+            if (!this.validForm)
                 return;
 
             network.post('/users/register', {
@@ -99,11 +99,11 @@ export default {
                 email: this.email,
                 username: this.username,
                 password: this.password
-            }).then(() => this.$swal({
+            }).then(_ => this.$swal({
                 title: 'Registration Complete',
                 text: 'You will now be redirected to the login page.',
                 icon: 'success'
-            }).then(() => this.navigate('/login')))
+            }).then(_ => this.navigate('/login')))
             .catch(err => this.$swal({
                 title: 'Failed to Complete Registration',
                 text: err.response.data.error || 'Could not connect to server.',
@@ -116,35 +116,35 @@ export default {
 
     computed: {
         validFirstname() {
-            if(this.firstname === null)
+            if (this.firstname === null)
                 return null;
             let regex = /^[A-Za-z-'\. ]+$/;
             return regex.test(this.firstname) && this.firstname.length <= 30;
         },
         validLastname() {
-            if(this.lastname === null)
+            if (this.lastname === null)
                 return null;
             let regex = /^[A-Za-z-'\. ]+$/;
             return regex.test(this.lastname) && this.lastname.length <= 30;
         },
         validEmail() {
-            if(this.email === null)
+            if (this.email === null)
                 return null;
             return utils.validateEmail(this.email);
         },
         validUsername() {
-            if(this.username === null)
+            if (this.username === null)
                 return null;
             let regex = /^[A-Za-z0-9_-]+$/;
             return regex.test(this.username) && this.username.length <= 30;
         },
         validPassword() {
-            if(this.password === null)
+            if (this.password === null)
                 return null;
             return this.password.length >= 8 && this.password.length <= 50;
         },
         validPassword2() {
-            if(this.password2 === null)
+            if (this.password2 === null)
                 return null;
             return this.password === this.password2;
         },
