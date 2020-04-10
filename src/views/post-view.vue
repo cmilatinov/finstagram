@@ -244,7 +244,7 @@ export default {
 						});
 					});
 				} else
-					this.$swal({ title: 'Succesfully Cancelled Post Deletion' });
+					this.$swal({ title: 'Post Deletion Cancelled' });
 			});
 		},
 		computePostHeight() {
