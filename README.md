@@ -50,4 +50,4 @@ The Instagram that the people deserve. A picture sharing platform with honest re
 
 ### Project Link
 http://192.168.0.109:8081/  
-Please email tengzhao@live.ca or text/call 514-996-2213 if connection timed out.
+Please email tengzhao@live.ca if connection timed out.
